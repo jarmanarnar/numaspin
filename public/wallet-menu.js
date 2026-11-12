@@ -40,19 +40,20 @@ export function initWalletMenu({ account, router, openStore, selectCurrency, doc
     hide.setAttribute('aria-checked', String(hidden));
     hide.disabled = busy;
     for (const [currency, option] of options) {
-      const active = String(currency === code);
+      const isActive = currency === code;
+      const pressed = String(isActive);
       const amount = hidden ? '••••••' : formatBalance(currency, wallet.balances[currency]);
       const label = `${CURRENCIES[currency].name}, ${hidden ? 'balance hidden' : amount}`;
-      option.row.dataset.active = active;
-      option.button.setAttribute('aria-pressed', active);
+      option.row.dataset.active = pressed;
+      option.button.setAttribute('aria-pressed', pressed);
       option.button.setAttribute('aria-label', label);
       option.amount.textContent = amount;
       option.button.disabled = busy;
       if (option.tab && option.tabAmount) {
-        option.tab.setAttribute('aria-pressed', active);
-        option.tab.setAttribute('aria-label', label);
+        option.tab.setAttribute('aria-pressed', pressed);
+        option.tab.setAttribute('aria-label', isActive ? label : `${CURRENCIES[currency].name} (${currency})`);
         option.tab.setAttribute('aria-disabled', String(busy));
-        option.tabAmount.textContent = amount;
+        option.tabAmount.textContent = isActive ? amount : currency;
       }
     }
     if (avatar) avatar.textContent = member.profile.avatar || 'L';

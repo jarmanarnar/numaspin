@@ -260,7 +260,7 @@ button.header-member-action { cursor: pointer; }
     justify-content: center;
     gap: .375rem;
     min-width: 0;
-    max-width: 6.75rem;
+    width: 6.5rem;
     height: var(--header-control-size);
     padding: 0 .625rem;
     border: 1px solid transparent;
@@ -292,7 +292,7 @@ button.header-member-action { cursor: pointer; }
     column-gap: .375rem;
   }
   .header-wallet-controls { justify-self: end; max-width: 100%; gap: .375rem; }
-  .wallet-currency-tab { max-width: 5.25rem; gap: .25rem; padding-inline: .3125rem; font-size: .75rem; }
+  .wallet-currency-tab { width: 4.5rem; gap: .25rem; padding-inline: .1875rem; font-size: .75rem; }
   .wallet-currency-tab img { width: 1rem; height: 1rem; }
   .header-member-actions { padding: 0; border: 0; background: transparent; }
   .header-buy-coins { width: 3.5rem; padding-inline: .3125rem; font-size: .75rem; }

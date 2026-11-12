@@ -63,7 +63,7 @@ test('currency menu uses real balances, masks both currencies and preserves the 
   } finally { page.account.close(); }
 });
 
-test('currency segments select a wallet directly and share the menu’s balances and privacy setting', async () => {
+test('currency segments show only the active balance and honor balance privacy', async () => {
   const page = await menuPage();
   try {
     const { account, nodes, menu } = page;
@@ -71,27 +71,31 @@ test('currency segments select a wallet directly and share the menu’s balances
     assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'true');
     assert.equal(nodes['wallet-tab-SC'].attributes['aria-pressed'], 'false');
     assert.equal(nodes['wallet-tab-amount-GC'].textContent, '125,000');
-    assert.equal(nodes['wallet-tab-amount-SC'].textContent, '15.00');
+    assert.equal(nodes['wallet-tab-amount-SC'].textContent, 'SC');
+    assert.equal(nodes['wallet-tab-SC'].attributes['aria-label'], 'Sweeps Coins (SC)');
     await nodes['wallet-tab-SC'].click();
     assert.equal(account.getSnapshot().wallet.currency, 'SC');
     assert.equal(nodes['wallet-tab-SC'].attributes['aria-pressed'], 'true');
     assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'false');
+    assert.equal(nodes['wallet-tab-amount-SC'].textContent, '15.00');
+    assert.equal(nodes['wallet-tab-amount-GC'].textContent, 'GC');
+    assert.equal(nodes['wallet-tab-GC'].attributes['aria-label'], 'Gold Coins (GC)');
     assert.equal(nodes['wallet-select-SC'].attributes['aria-pressed'], 'true');
     assert.equal(nodes['wallet-currency-menu'].hidden, true);
     assert.deepEqual(account.getSnapshot().wallet.balances, wallet.balances);
     assert.deepEqual(account.getSnapshot().ledger, ledger);
 
     await account.saveSettings({ hideBalance: true });
-    for (const code of ['GC', 'SC']) {
-      assert.equal(nodes[`wallet-tab-amount-${code}`].textContent, '••••••');
-      assert.match(nodes[`wallet-tab-${code}`].attributes['aria-label'], /balance hidden/);
-      assert.doesNotMatch(nodes[`wallet-tab-${code}`].attributes['aria-label'], /\d/);
-    }
+    assert.equal(nodes['wallet-tab-amount-SC'].textContent, '••••••');
+    assert.equal(nodes['wallet-tab-amount-GC'].textContent, 'GC');
+    assert.equal(nodes['wallet-tab-SC'].attributes['aria-label'], 'Sweeps Coins, balance hidden');
 
     menu.toggle();
     await nodes['wallet-select-GC'].click();
     assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'true');
     assert.equal(nodes['wallet-tab-SC'].attributes['aria-pressed'], 'false');
+    assert.equal(nodes['wallet-tab-amount-GC'].textContent, '••••••');
+    assert.equal(nodes['wallet-tab-amount-SC'].textContent, 'SC');
   } finally { page.account.close(); }
 });
 
