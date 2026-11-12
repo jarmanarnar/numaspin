@@ -4,12 +4,15 @@ import { IDBFactory } from 'fake-indexeddb';
 import { openDemoAccount } from '../public/demo-account.js';
 import { initWalletMenu } from '../public/wallet-menu.js';
 
-async function menuPage() {
+async function menuPage({ selectCurrency = (account, code) => account.selectCurrency(code) } = {}) {
   const account = await openDemoAccount({ indexedDB: new IDBFactory(), scope: undefined });
   await account.register({ email: 'wallet-menu@example.test', password: 'WalletMenu37!', accepted: true });
   const ids = ['header-wallet-controls', 'wallet-currency-menu', 'coin-type-switch', 'currency-coin',
-    'wallet-hide-balance', 'wallet-menu-status', 'header-avatar', 'header-buy-coins',
-    ...['GC', 'SC'].flatMap(code => [`wallet-row-${code}`, `wallet-select-${code}`, `wallet-amount-${code}`])];
+    'wallet-hide-balance', 'wallet-menu-status', 'wallet-tabs-status', 'header-avatar', 'header-buy-coins',
+    ...['GC', 'SC'].flatMap(code => [
+      `wallet-row-${code}`, `wallet-select-${code}`, `wallet-amount-${code}`,
+      `wallet-tab-${code}`, `wallet-tab-amount-${code}`,
+    ])];
   const nodes = Object.fromEntries(ids.map(id => [id, {
     hidden: id === 'wallet-currency-menu', attributes: {}, dataset: {}, listeners: {}, textContent: '',
     setAttribute(key, value) { this.attributes[key] = value; },
@@ -23,7 +26,7 @@ async function menuPage() {
   const menu = initWalletMenu({ account,
     document: { querySelector: selector => nodes[selector.slice(1)], addEventListener: (key, callback) => { events[key] = callback; } },
     router: { subscribe: callback => routes.push(callback) },
-    selectCurrency: code => account.selectCurrency(code), openStore: () => stores.push('store'),
+    selectCurrency: code => selectCurrency(account, code), openStore: () => stores.push('store'),
   });
   return { account, nodes, events, stores, menu, route: () => routes.forEach(callback => callback()) };
 }
@@ -57,6 +60,50 @@ test('currency menu uses real balances, masks both currencies and preserves the 
     assert.deepEqual(account.getSnapshot().wallet.balances, balances);
     assert.deepEqual(account.getSnapshot().ledger, ledger);
     assert.equal(nodes['wallet-currency-menu'].hidden, true);
+  } finally { page.account.close(); }
+});
+
+test('currency segments select a wallet directly and share the menu’s balances and privacy setting', async () => {
+  const page = await menuPage();
+  try {
+    const { account, nodes, menu } = page;
+    const { wallet, ledger } = account.getSnapshot();
+    assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'true');
+    assert.equal(nodes['wallet-tab-SC'].attributes['aria-pressed'], 'false');
+    assert.equal(nodes['wallet-tab-amount-GC'].textContent, '125,000');
+    assert.equal(nodes['wallet-tab-amount-SC'].textContent, '15.00');
+    await nodes['wallet-tab-SC'].click();
+    assert.equal(account.getSnapshot().wallet.currency, 'SC');
+    assert.equal(nodes['wallet-tab-SC'].attributes['aria-pressed'], 'true');
+    assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'false');
+    assert.equal(nodes['wallet-select-SC'].attributes['aria-pressed'], 'true');
+    assert.equal(nodes['wallet-currency-menu'].hidden, true);
+    assert.deepEqual(account.getSnapshot().wallet.balances, wallet.balances);
+    assert.deepEqual(account.getSnapshot().ledger, ledger);
+
+    await account.saveSettings({ hideBalance: true });
+    for (const code of ['GC', 'SC']) {
+      assert.equal(nodes[`wallet-tab-amount-${code}`].textContent, '••••••');
+      assert.match(nodes[`wallet-tab-${code}`].attributes['aria-label'], /balance hidden/);
+      assert.doesNotMatch(nodes[`wallet-tab-${code}`].attributes['aria-label'], /\d/);
+    }
+
+    menu.toggle();
+    await nodes['wallet-select-GC'].click();
+    assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'true');
+    assert.equal(nodes['wallet-tab-SC'].attributes['aria-pressed'], 'false');
+  } finally { page.account.close(); }
+});
+
+test('a failed currency segment change reports the error and retains the active currency', async () => {
+  const page = await menuPage({ selectCurrency: () => false });
+  try {
+    const { account, nodes } = page;
+    await nodes['wallet-tab-SC'].click();
+    assert.match(nodes['wallet-tabs-status'].textContent, /unable to save/i);
+    assert.equal(account.getSnapshot().wallet.currency, 'GC');
+    assert.equal(nodes['wallet-tab-GC'].attributes['aria-pressed'], 'true');
+    assert.equal(nodes['wallet-tab-SC'].attributes['aria-disabled'], 'false');
   } finally { page.account.close(); }
 });
 

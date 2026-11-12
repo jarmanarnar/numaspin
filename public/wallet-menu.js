@@ -8,11 +8,15 @@ export function initWalletMenu({ account, router, openStore, selectCurrency, doc
   const coin = doc.querySelector('#currency-coin');
   const hide = doc.querySelector('#wallet-hide-balance');
   const feedback = doc.querySelector('#wallet-menu-status');
+  const tabFeedback = doc.querySelector('#wallet-tabs-status');
+  const segmentedWallet = doc.defaultView?.matchMedia('(min-width: 22.5rem)');
   const avatar = doc.querySelector('#header-avatar');
   const options = new Map(['GC', 'SC'].map(code => [code, {
     row: doc.querySelector(`#wallet-row-${code}`),
     button: doc.querySelector(`#wallet-select-${code}`),
     amount: doc.querySelector(`#wallet-amount-${code}`),
+    tab: doc.querySelector(`#wallet-tab-${code}`),
+    tabAmount: doc.querySelector(`#wallet-tab-amount-${code}`),
   }]));
   let busy = false;
 
@@ -36,11 +40,20 @@ export function initWalletMenu({ account, router, openStore, selectCurrency, doc
     hide.setAttribute('aria-checked', String(hidden));
     hide.disabled = busy;
     for (const [currency, option] of options) {
-      option.row.dataset.active = String(currency === code);
-      option.button.setAttribute('aria-pressed', String(currency === code));
-      option.button.setAttribute('aria-label', `${CURRENCIES[currency].name}, ${hidden ? 'balance hidden' : formatBalance(currency, wallet.balances[currency])}`);
-      option.amount.textContent = hidden ? '••••••' : formatBalance(currency, wallet.balances[currency]);
+      const active = String(currency === code);
+      const amount = hidden ? '••••••' : formatBalance(currency, wallet.balances[currency]);
+      const label = `${CURRENCIES[currency].name}, ${hidden ? 'balance hidden' : amount}`;
+      option.row.dataset.active = active;
+      option.button.setAttribute('aria-pressed', active);
+      option.button.setAttribute('aria-label', label);
+      option.amount.textContent = amount;
       option.button.disabled = busy;
+      if (option.tab && option.tabAmount) {
+        option.tab.setAttribute('aria-pressed', active);
+        option.tab.setAttribute('aria-label', label);
+        option.tab.setAttribute('aria-disabled', String(busy));
+        option.tabAmount.textContent = amount;
+      }
     }
     if (avatar) avatar.textContent = member.profile.avatar || 'L';
     if (!account.isSignedIn()) close();
@@ -52,21 +65,26 @@ export function initWalletMenu({ account, router, openStore, selectCurrency, doc
     trigger.setAttribute('aria-expanded', String(opening));
     feedback.textContent = '';
   }
-  async function save(action, dismiss = false) {
+  async function save(action, dismiss = false, status = feedback) {
     if (busy) return;
     busy = true;
-    feedback.textContent = '';
+    status.textContent = '';
     render();
     try {
       const result = await action();
       if (result === false || result?.ok === false) throw new Error('Save failed');
       if (dismiss) close(true);
-    } catch { feedback.textContent = 'Unable to save. Please try again.'; }
+    } catch { status.textContent = 'Unable to save. Please try again.'; }
     finally { busy = false; render(); }
   }
   for (const [code, option] of options) {
     option.button.addEventListener('click', () => save(() => selectCurrency(code), true));
+    option.tab?.addEventListener('click', () => {
+      if (!account.isSignedIn() || account.getSnapshot().wallet.currency === code) return;
+      return save(() => selectCurrency(code), false, tabFeedback || feedback);
+    });
   }
+  segmentedWallet?.addEventListener('change', () => close());
   doc.querySelector('#header-buy-coins').addEventListener('click', () => { close(); openStore?.(); });
   hide.addEventListener('click', () => save(() => account.saveSettings({ hideBalance: !account.getMemberState().settings.hideBalance })));
   trigger.addEventListener('keydown', event => {
