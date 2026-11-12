@@ -103,7 +103,7 @@ export function initFeatureView({ router, wallet, account, auth, verifyPhone, op
     document.body.dataset.page = 'feature';
     document.querySelector('#catalog-categories').dataset.activeMenu = currentPage;
     title.textContent = page.title;
-    document.title = `${page.title} · LuckyLoop Casino`;
+    document.title = `${page.title} · NUMA SPIN`;
     notice.textContent = '';
     void save(() => account.recordPageVisit(currentPage));
     renderContent();

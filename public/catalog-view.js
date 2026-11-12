@@ -224,7 +224,7 @@ export function initCatalogView({ router, member } = {}) {
     header.hidden = home;
     controls.hidden = home || model.type === 'not-found';
     title.textContent = model.title;
-    document.title = home ? 'LuckyLoop Casino' : `${model.title} · LuckyLoop Casino`;
+    document.title = home ? 'NUMA SPIN' : `${model.title} · NUMA SPIN`;
     categories.dataset.activeMenu = home ? 'lobby' : model.activeMenu;
     for (const button of categories.querySelectorAll('[data-category]')) {
       button.setAttribute('aria-pressed', String(button.dataset.category === model.activeMenu));

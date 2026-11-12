@@ -4,27 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
-  <meta name="application-name" content="LuckyLoop Casino">
-  <meta name="description" content="LuckyLoop Casino — a casino lobby prototype with provider catalogs, game collections, and a two-currency demo wallet.">
-  <title>LuckyLoop Casino</title>
+  <meta name="application-name" content="NUMA SPIN">
+  <meta name="description" content="NUMA SPIN — a casino lobby prototype with provider catalogs, game collections, and a two-currency demo wallet.">
+  <title>NUMA SPIN</title>
   <style id="app-loader-styles">
     body:is([data-app-state="loading"], [data-app-state="error"]) > :not(#app-loader) { visibility: hidden; }
     .app-loader { position: fixed; z-index: 1000; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 1.5rem; background: #000; color: #eeeef2; text-align: center; touch-action: none; }
     .app-loader[hidden] { display: none !important; }
-    .app-loader__brand { --app-loader-duration: 1800ms; width: min(7.5rem, calc(100vw - 3rem)); aspect-ratio: 782 / 373; }
-    .app-loader__brand > svg { display: block; width: 100%; height: 100%; }
-    .app-loader__base { opacity: .24; }
-    .app-loader__orbit { stroke-dasharray: .78125 99.21875; animation: app-loader-orbit var(--app-loader-duration) linear infinite; }
-    .app-loader__brand[data-paused="true"] .app-loader__orbit { animation-play-state: paused; }
-    .app-loader__brand[data-reduced="true"] .app-loader__orbit { display: none; }
-    .app-loader__brand[data-reduced="true"] .app-loader__base { opacity: 1; }
+    .app-loader__brand { --app-loader-duration: 1800ms; display: grid; justify-items: center; gap: .75rem; font: 700 1.5rem/1.1 Arial, sans-serif; letter-spacing: .08em; white-space: nowrap; }
+    .app-loader__progress { width: 6rem; height: .1875rem; overflow: hidden; border-radius: 1rem; background: #2a2a30; }
+    .app-loader__progress::after { content: ''; display: block; width: 50%; height: 100%; border-radius: inherit; background: currentColor; animation: app-loader-slide var(--app-loader-duration) linear infinite; }
+    .app-loader__brand[data-paused="true"] .app-loader__progress::after { animation-play-state: paused; }
+    .app-loader__brand[data-reduced="true"] .app-loader__progress::after { animation: none; }
     .app-loader__message { margin: 0; color: #9b9ba5; font: .875rem Arial, sans-serif; }
     .app-loader__retry { min-height: 2.75rem; padding: .625rem 1.25rem; border: 0; border-radius: .5rem; background: #20212a; color: #eeeef2; font-weight: 700; cursor: pointer; }
-    @keyframes app-loader-orbit { from { stroke-dashoffset: calc(var(--offset) * 1px); } to { stroke-dashoffset: calc(var(--offset) * 1px - 100px); } }
-    @media (prefers-reduced-motion: reduce) {
-      .app-loader__orbit { display: none; }
-      .app-loader__base { opacity: 1; }
-    }
+    @keyframes app-loader-slide { from { transform: translateX(-100%); } to { transform: translateX(200%); } }
+    @media (prefers-reduced-motion: reduce) { .app-loader__progress::after { animation: none; } }
   </style>
   <link rel="preload" href="assets/fonts/arimo-bold-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
@@ -45,52 +40,11 @@
 </head>
 <body data-sidebar="collapsed" data-app-state="loading" data-app-starting="true" data-auth="guest" data-wallet-layout="currency-menu">
   <div id="app-loader" class="app-loader" role="status" aria-live="polite" lang="en" dir="ltr">
-    <div id="app-loader-brand" class="app-loader__brand" data-paused="true" role="img" aria-label="LOOP infinity">
-      <svg viewBox="0 0 782 373" fill="currentColor" aria-hidden="true" focusable="false">
-        <defs>
-          <!-- Inlined from assets/loop-infinity.svg so the loader needs no image request. -->
-          <path id="app-loader-shape" fill-rule="evenodd" d="M178.04,2.5 194.5,1.59 216.5,2.22 234.5,4.33 248.5,7.35 259.5,10.21 265.5,12.26 280.5,18.44 297.43,27.5 309.5,35.29 322.5,45.19 339.99,60.5 356.54,76.5 373.76,94.5 404.65,129.5 457,193.5 473.94,213.5 490.5,231.31 504.5,244.64 511.5,250.63 526.5,261.68 536.5,267.65 544.5,271.75 554.5,275.87 564.5,278.8 574.5,280.76 585.5,281.8 593.5,281.75 604.5,280.93 615.5,278.79 622.5,276.79 630.5,273.8 645.5,265.72 656.28,257.5 664.5,249.36 672.5,238.98 677.62,230.5 679.5,226.5 683.75,214.5 685.69,206.5 686.69,199.5 686.87,183.5 685.68,173.5 683.56,164.5 680.7,155.5 677.83,148.5 674.68,142.5 667.8,131.5 663.01,125.5 656.5,118.47 646.5,110.14 637.5,104.35 626.5,99.03 614.5,94.92 599.5,92.07 589.5,91.66 578.5,92.12 562.5,95.03 547.5,100.06 532.5,107.1 520.5,114.11 508.5,122.12 500.5,128.1 483.5,142.26 457.5,167.15 436.04,140.5 419.74,121.5 399.17,99.5 399.15,98.5 416.5,81.21 434.5,65.05 450.5,52.18 464.5,42.29 480.5,32.26 498.96,22.5 515.5,15.37 529.5,10.43 545.5,6.34 561.5,3.38 572.5,2.26 592.5,1.62 606.5,2.32 623.5,4.31 645.5,9.41 662.5,15.32 677.5,22.43 692.5,31.14 708.5,42.96 720.5,54.01 733.85,68.5 743.86,81.5 751.78,93.5 755.82,100.5 759.66,107.5 764.79,118.5 771.77,137.5 776.72,156.5 778.93,171.5 779.97,189.5 778.92,209.5 776.87,222.5 774.9,231.5 771.72,242.5 765.78,258.5 757.89,274.5 750.66,286.5 742.93,297.5 728.5,313.92 712.39,328.5 702.5,335.96 688.5,345.05 672.5,353.27 657.5,359.57 641.5,364.62 628.5,367.63 606.5,370.67 591.5,371.13 574.5,370.62 553.5,367.75 536.5,363.74 523.5,359.73 513.5,355.83 498.5,348.77 489.5,343.85 479.5,337.71 466.5,328.7 454.5,319.58 439.5,306.75 428.5,296.56 414.46,282.5 393.27,259.5 370.21,232.5 341.88,197.5 306.85,155.5 292.99,140.5 284.5,132.17 274.5,123.22 265.5,116.03 255.5,109.22 244.5,103.12 235.5,99.17 222.5,95.04 212.5,93.02 202.5,91.93 188.5,91.93 178.5,93.17 166.5,96.07 153.5,101.01 140.5,108.06 129.5,116.14 120.5,124.71 111.33,136.5 104.18,148.5 98.18,163.5 95.13,176.5 93.95,189.5 94.16,197.5 95.14,205.5 97.23,214.5 102.18,227.5 107.24,236.5 111.3,242.5 115.38,247.5 124.5,256.57 135.5,264.94 143.5,269.53 157.5,275.73 168.5,278.98 179.5,280.87 192.5,281.71 204.5,280.8 219.5,277.86 231.5,273.8 244.5,268 252.5,263.84 268.5,253.67 275.5,248.78 291.5,235.86 309.38,219.5 323.5,205.02 324.5,204.61 347.28,232.5 360.88,248.5 381.75,271.5 381.99,272.5 365.5,288.85 345.5,306.8 329.5,319.67 315.5,329.87 301.5,338.93 285.5,347.99 269.49,355.5 249.5,362.75 229.5,367.66 216.5,369.67 198.5,371.04 175.5,370.91 154.5,368.63 144.5,366.67 130.5,362.77 111.5,355.69 94.5,346.91 83.5,339.94 72.5,331.84 59.5,320.67 45.87,306.5 39.22,298.5 31.18,287.5 23.14,274.5 15.25,258.5 10.5,246.26 6.3,232.5 3.32,218.5 1.39,203.5 1.02,190.5 1.36,178.5 3.4,162.5 6.31,148.5 10.43,134.5 15.71,120.5 23.83,103.5 31.45,90.5 42.25,75.5 55.43,60.5 65.5,50.97 78.5,40.32 88.5,33.36 101.74,25.5 118.5,17.36 134.5,11.33 148.5,7.41 164.5,4.22Z"/>
-          <clipPath id="app-loader-clip"><use href="#app-loader-shape"/></clipPath>
-          <path id="app-loader-route" pathLength="100" d="M46 186C46 104 116 46 195 46C284 46 335 126 392 186C451 249 506 324 587 324C666 324 735 268 735 186C735 104 666 46 587 46C506 46 451 126 392 186C335 249 284 324 195 324C116 324 46 268 46 186"/>
-        </defs>
-        <use class="app-loader__base" href="#app-loader-shape"/>
-        <g clip-path="url(#app-loader-clip)" fill="none" stroke="currentColor" stroke-linecap="round">
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="8" opacity="0.06" style="--offset:0"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="19.59" opacity="0.161" style="--offset:-0.78125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="26.18" opacity="0.218" style="--offset:-1.5625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="31.67" opacity="0.266" style="--offset:-2.34375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="36.53" opacity="0.308" style="--offset:-3.125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="40.99" opacity="0.347" style="--offset:-3.90625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="45.14" opacity="0.383" style="--offset:-4.6875"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="49.05" opacity="0.417" style="--offset:-5.46875"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="52.78" opacity="0.45" style="--offset:-6.25"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="56.34" opacity="0.481" style="--offset:-7.03125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="59.77" opacity="0.511" style="--offset:-7.8125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="63.07" opacity="0.539" style="--offset:-8.59375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="66.28" opacity="0.567" style="--offset:-9.375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="69.39" opacity="0.594" style="--offset:-10.15625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="72.42" opacity="0.621" style="--offset:-10.9375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="75.37" opacity="0.646" style="--offset:-11.71875"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="78.26" opacity="0.672" style="--offset:-12.5"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="81.09" opacity="0.696" style="--offset:-13.28125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="83.85" opacity="0.72" style="--offset:-14.0625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="86.56" opacity="0.744" style="--offset:-14.84375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="89.23" opacity="0.767" style="--offset:-15.625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="91.85" opacity="0.79" style="--offset:-16.40625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="94.42" opacity="0.812" style="--offset:-17.1875"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="96.95" opacity="0.834" style="--offset:-17.96875"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="99.45" opacity="0.856" style="--offset:-18.75"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="101.91" opacity="0.877" style="--offset:-19.53125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="104.33" opacity="0.898" style="--offset:-20.3125"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="106.72" opacity="0.919" style="--offset:-21.09375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="109.09" opacity="0.94" style="--offset:-21.875"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="111.42" opacity="0.96" style="--offset:-22.65625"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="113.72" opacity="0.98" style="--offset:-23.4375"/>
-          <use class="app-loader__orbit" href="#app-loader-route" stroke-width="116" opacity="1" style="--offset:-24.21875"/>
-        </g>
-      </svg>
+    <div id="app-loader-brand" class="app-loader__brand" data-paused="true" aria-hidden="true">
+      <span>NUMA SPIN</span>
+      <span class="app-loader__progress"></span>
     </div>
-    <p id="app-load-status" class="visually-hidden">Loading LuckyLoop Casino…</p>
+    <p id="app-load-status" class="visually-hidden">Loading NUMA SPIN…</p>
     <button id="app-load-retry" class="app-loader__retry" type="button" hidden>Try again</button>
     <noscript><p>Enable JavaScript to load the site.</p></noscript>
   </div>
@@ -104,7 +58,7 @@
         <button class="icon-button menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="5" width="18" height="3" rx="1.5"/><rect x="3" y="10.5" width="18" height="3" rx="1.5"/><rect x="3" y="16" width="18" height="3" rx="1.5"/></svg>
         </button>
-        <a class="site-logo" href="#" aria-label="LuckyLoop Casino home"><img class="site-logo__image site-logo__image--wordmark" src="assets/loop-wordmark.svg" width="1413" height="370" alt="LOOP"><img class="site-logo__image site-logo__image--mark" src="assets/loop-infinity.svg" width="782" height="373" alt="LOOP"></a>
+        <a class="site-logo" href="#" aria-label="NUMA SPIN home"><span class="site-logo__wordmark">NUMA SPIN</span></a>
       </div>
       <div id="coin-wallet" class="coin-wallet" data-currency="GC" aria-label="Demo wallet" role="group" hidden>
         <button id="wallet-add" class="icon-button" type="button" aria-label="Open Store" aria-controls="store-view"><img id="wallet-add-art" src="assets/coins/add-gold.svg" width="48" height="48" alt="" aria-hidden="true"></button>
@@ -162,10 +116,10 @@
     </section>
   </section>
   <main class="page-content" id="lobby-view">
-    <section id="guest-welcome" class="guest-welcome" aria-label="Welcome to LOOP" lang="en" dir="ltr">
+    <section id="guest-welcome" class="guest-welcome" aria-label="Welcome to NUMA SPIN" lang="en" dir="ltr">
       <div class="guest-welcome__wireframe" aria-hidden="true"></div>
       <div class="guest-register-card">
-        <h1>Welcome to LOOP</h1>
+        <h1>Welcome to NUMA SPIN</h1>
         <p>You’re almost in</p>
         <button class="auth-button primary-button guest-register-now" type="button" data-auth-open="register">Register Now</button>
         <div class="auth-divider"><span>Or continue with</span></div>
@@ -239,7 +193,7 @@
   <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" lang="en" dir="ltr" hidden>
     <button id="mobile-nav-menu" class="mobile-nav__item" data-mobile-action="menu" type="button" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="3" rx="1.5"/><rect x="3" y="10.5" width="18" height="3" rx="1.5"/><rect x="3" y="16" width="18" height="3" rx="1.5"/></svg><span class="mobile-nav__label">Menu</span></button>
     <button id="mobile-nav-store" class="mobile-nav__item" data-mobile-action="store" type="button" aria-controls="store-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M20 4H4v2h16V4Zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1Zm-9 4H6v-4h6v4Z"/></svg><span class="mobile-nav__label">Store</span></button>
-    <button id="mobile-nav-lobby" class="mobile-nav__item" data-mobile-action="lobby" type="button" aria-controls="lobby-view"><svg class="mobile-nav__icon mobile-nav__icon--loop" viewBox="0 0 782 373" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M178.04,2.5 194.5,1.59 216.5,2.22 234.5,4.33 248.5,7.35 259.5,10.21 265.5,12.26 280.5,18.44 297.43,27.5 309.5,35.29 322.5,45.19 339.99,60.5 356.54,76.5 373.76,94.5 404.65,129.5 457,193.5 473.94,213.5 490.5,231.31 504.5,244.64 511.5,250.63 526.5,261.68 536.5,267.65 544.5,271.75 554.5,275.87 564.5,278.8 574.5,280.76 585.5,281.8 593.5,281.75 604.5,280.93 615.5,278.79 622.5,276.79 630.5,273.8 645.5,265.72 656.28,257.5 664.5,249.36 672.5,238.98 677.62,230.5 679.5,226.5 683.75,214.5 685.69,206.5 686.69,199.5 686.87,183.5 685.68,173.5 683.56,164.5 680.7,155.5 677.83,148.5 674.68,142.5 667.8,131.5 663.01,125.5 656.5,118.47 646.5,110.14 637.5,104.35 626.5,99.03 614.5,94.92 599.5,92.07 589.5,91.66 578.5,92.12 562.5,95.03 547.5,100.06 532.5,107.1 520.5,114.11 508.5,122.12 500.5,128.1 483.5,142.26 457.5,167.15 436.04,140.5 419.74,121.5 399.17,99.5 399.15,98.5 416.5,81.21 434.5,65.05 450.5,52.18 464.5,42.29 480.5,32.26 498.96,22.5 515.5,15.37 529.5,10.43 545.5,6.34 561.5,3.38 572.5,2.26 592.5,1.62 606.5,2.32 623.5,4.31 645.5,9.41 662.5,15.32 677.5,22.43 692.5,31.14 708.5,42.96 720.5,54.01 733.85,68.5 743.86,81.5 751.78,93.5 755.82,100.5 759.66,107.5 764.79,118.5 771.77,137.5 776.72,156.5 778.93,171.5 779.97,189.5 778.92,209.5 776.87,222.5 774.9,231.5 771.72,242.5 765.78,258.5 757.89,274.5 750.66,286.5 742.93,297.5 728.5,313.92 712.39,328.5 702.5,335.96 688.5,345.05 672.5,353.27 657.5,359.57 641.5,364.62 628.5,367.63 606.5,370.67 591.5,371.13 574.5,370.62 553.5,367.75 536.5,363.74 523.5,359.73 513.5,355.83 498.5,348.77 489.5,343.85 479.5,337.71 466.5,328.7 454.5,319.58 439.5,306.75 428.5,296.56 414.46,282.5 393.27,259.5 370.21,232.5 341.88,197.5 306.85,155.5 292.99,140.5 284.5,132.17 274.5,123.22 265.5,116.03 255.5,109.22 244.5,103.12 235.5,99.17 222.5,95.04 212.5,93.02 202.5,91.93 188.5,91.93 178.5,93.17 166.5,96.07 153.5,101.01 140.5,108.06 129.5,116.14 120.5,124.71 111.33,136.5 104.18,148.5 98.18,163.5 95.13,176.5 93.95,189.5 94.16,197.5 95.14,205.5 97.23,214.5 102.18,227.5 107.24,236.5 111.3,242.5 115.38,247.5 124.5,256.57 135.5,264.94 143.5,269.53 157.5,275.73 168.5,278.98 179.5,280.87 192.5,281.71 204.5,280.8 219.5,277.86 231.5,273.8 244.5,268 252.5,263.84 268.5,253.67 275.5,248.78 291.5,235.86 309.38,219.5 323.5,205.02 324.5,204.61 347.28,232.5 360.88,248.5 381.75,271.5 381.99,272.5 365.5,288.85 345.5,306.8 329.5,319.67 315.5,329.87 301.5,338.93 285.5,347.99 269.49,355.5 249.5,362.75 229.5,367.66 216.5,369.67 198.5,371.04 175.5,370.91 154.5,368.63 144.5,366.67 130.5,362.77 111.5,355.69 94.5,346.91 83.5,339.94 72.5,331.84 59.5,320.67 45.87,306.5 39.22,298.5 31.18,287.5 23.14,274.5 15.25,258.5 10.5,246.26 6.3,232.5 3.32,218.5 1.39,203.5 1.02,190.5 1.36,178.5 3.4,162.5 6.31,148.5 10.43,134.5 15.71,120.5 23.83,103.5 31.45,90.5 42.25,75.5 55.43,60.5 65.5,50.97 78.5,40.32 88.5,33.36 101.74,25.5 118.5,17.36 134.5,11.33 148.5,7.41 164.5,4.22Z"/></svg><span class="mobile-nav__label">Lobby</span></button>
+    <button id="mobile-nav-lobby" class="mobile-nav__item" data-mobile-action="lobby" type="button" aria-controls="lobby-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3Z"/></svg><span class="mobile-nav__label">Lobby</span></button>
     <button id="mobile-nav-redeem" class="mobile-nav__item" data-mobile-action="redeem" type="button" aria-haspopup="dialog" aria-controls="phone-verification-dialog"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 3v3h16V6H4Zm8 5-5 4h3v4h4v-4h3l-5-4Z"/></svg><span class="mobile-nav__label">Redeem</span></button>
     <button id="mobile-nav-profile" class="mobile-nav__item" data-mobile-action="profile" type="button" aria-controls="feature-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm-6 12a6 6 0 0 1 12 0H6Z"/></svg><span class="mobile-nav__label">Profile</span></button>
   </nav>
@@ -338,7 +292,7 @@
     <div class="auth-layout">
       <div class="auth-wireframe" aria-hidden="true"></div>
       <div class="auth-content">
-        <h2 id="auth-title" class="visually-hidden" tabindex="-1" autofocus>Login to LOOP</h2>
+        <h2 id="auth-title" class="visually-hidden" tabindex="-1" autofocus>Login to NUMA SPIN</h2>
         <div class="auth-tabs" role="tablist" aria-label="Account access">
           <button id="auth-tab-login" type="button" role="tab" aria-selected="true" aria-controls="auth-panel">Login</button>
           <button id="auth-tab-register" type="button" role="tab" aria-selected="false" aria-controls="auth-panel" tabindex="-1">Register</button>

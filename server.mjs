@@ -104,6 +104,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const server = createAppServer({ liveReload: process.argv.includes('--live-reload') });
   server.on('error', error => { console.error(error.message); process.exitCode = 1; });
   server.listen(Number(process.env.PORT || 4320), '127.0.0.1', () => {
-    console.log(`LuckyLoop Casino: http://127.0.0.1:${server.address().port}${basePath}`);
+    console.log(`NUMA SPIN: http://127.0.0.1:${server.address().port}${basePath}`);
   });
 }

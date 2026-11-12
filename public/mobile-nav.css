@@ -39,8 +39,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 .mobile-nav__icon { display: block; flex: none; width: 1.25rem; height: 1.25rem; fill: currentColor; }
-/* Reuse the approved wordmark's infinity, retaining the selected-coin accent. */
-.mobile-nav__icon--loop { width: 2rem; }
 .mobile-nav__label { font-size: .6875rem; font-weight: 700; line-height: 1.2; white-space: nowrap; }
 .mobile-nav__item:is([aria-current="page"], [data-active="true"]) { color: var(--text-primary); }
 .mobile-nav__item:is([aria-current="page"], [data-active="true"]) .mobile-nav__icon { color: var(--catalog-accent); }

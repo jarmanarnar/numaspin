@@ -2,8 +2,7 @@
 .guest-header-actions[hidden], .coin-wallet[hidden], .wallet-switch[hidden], .guest-welcome[hidden] { display: none !important; }
 body[data-auth="guest"] .top-bar__inner { grid-template-columns: minmax(0,1fr) auto; }
 body[data-auth="guest"] .site-logo { display: flex; width: 6.5rem; height: 2rem; }
-body[data-auth="guest"] .site-logo__image--wordmark { display: block; }
-body[data-auth="guest"] .site-logo__image--mark { display: none; }
+body[data-auth="guest"] .site-logo__wordmark { white-space: nowrap; }
 .auth-button, .auth-icon-button, .auth-social { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 2.75rem; border: 1px solid #303137; border-radius: .6rem; padding: .625rem 1.25rem; font: 700 .875rem/1.25 var(--header-font-family); color: var(--text-primary); cursor: pointer; text-decoration: none; }
 .auth-button--secondary, .auth-icon-button { background: #202124; }
 .auth-button:hover, .auth-icon-button:hover { filter: brightness(1.08); }

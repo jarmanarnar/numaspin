@@ -407,21 +407,10 @@
       cursor: pointer;
     }
     .shelf-view-all:hover { filter: brightness(1.3); }
-    .shelf-view-all::before, .shelf-view-all::after {
-      content: '';
-      position: absolute;
-      width: 1.75rem;
-      height: .875rem;
-      background: #3b3b40;
-      mask: url('assets/loop-infinity.svg') center / contain no-repeat;
-    }
-    .shelf-view-all::before { top: .75rem; left: .625rem; }
-    .shelf-view-all::after { right: .625rem; bottom: .75rem; }
     .shelf-view-all__title { font-size: var(--game-title-size); font-weight: 700; }
     .shelf-view-all__count { color: var(--text-secondary); font-size: .75rem; font-weight: 700; }
     .provider-card.shelf-view-all-card { border-radius: .625rem; }
     .provider-card .shelf-view-all { height: 4.5rem; aspect-ratio: auto; }
-    .provider-card .shelf-view-all::before, .provider-card .shelf-view-all::after { display: none; }
     .game-launch {
       position: relative;
       display: flex;

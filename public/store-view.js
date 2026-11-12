@@ -94,7 +94,7 @@ export function initStoreView({ router, account, auth, verifyPhone } = {}) {
     view.hidden = route.type !== 'store';
     if (!view.hidden) {
       document.body.dataset.page = 'store';
-      document.title = 'Store · LuckyLoop Casino';
+      document.title = 'Store · NUMA SPIN';
       if (meta.source === 'navigate' && meta.focus !== false) view.querySelector('h1').focus({ preventScroll: true });
     }
   }

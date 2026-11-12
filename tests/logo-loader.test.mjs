@@ -74,7 +74,7 @@ test('a background page can stop before any visible animation is painted', () =>
   assertStopped(page);
 });
 
-test('reduced motion keeps a static infinity without a display-duration timer', () => {
+test('reduced motion keeps a static wordmark without a display-duration timer', () => {
   const page = setup({ reduced: true });
   page.paint();
   assert.equal(page.brand.dataset.reduced, 'true');

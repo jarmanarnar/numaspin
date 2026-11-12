@@ -72,7 +72,7 @@ export function initAuthView({ account, router } = {}) {
     toggle.setAttribute('aria-pressed', 'false');
     toggle.setAttribute('aria-label', 'Show password');
     submit.textContent = mode === 'register' ? 'Register' : 'Login';
-    document.querySelector('#auth-title').textContent = mode === 'register' ? 'Register with LOOP' : 'Login to LOOP';
+    document.querySelector('#auth-title').textContent = mode === 'register' ? 'Register with NUMA SPIN' : 'Login to NUMA SPIN';
     document.querySelector('#auth-panel').setAttribute('aria-labelledby', `auth-tab-${mode}`);
     tabs.forEach((tab, index) => {
       const active = ['login', 'register'][index] === mode;

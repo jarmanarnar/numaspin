@@ -13,11 +13,11 @@ after(async () => {
   await new Promise(resolve => server.close(resolve));
 });
 
-test('canonical page serves LuckyLoop branding and local styles', async () => {
+test('canonical page serves NUMA SPIN branding and local styles', async () => {
   const response = await fetch(`${origin}/luckyloopcasino/`);
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /<title>LuckyLoop Casino<\/title>/);
+  assert.match(html, /<title>NUMA SPIN<\/title>/);
   assert.match(html, /href="styles.css"/);
   assert.match(html, /href="wallet.css"/);
   assert.match(html, /src="bootstrap.js"/);

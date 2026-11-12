@@ -205,7 +205,7 @@ export function initGameDetails({ router, member } = {}) {
     document.body.dataset.view = 'lobby';
     const categories = document.querySelector('#catalog-categories');
     if (categories) categories.dataset.activeMenu = '';
-    document.title = `${game.title} · LuckyLoop Casino`;
+    document.title = `${game.title} · NUMA SPIN`;
 
     const back = node('button', 'game-details-back');
     back.type = 'button';

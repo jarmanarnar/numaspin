@@ -18,7 +18,7 @@ function startup({ fonts = Promise.resolve(), fontLoad = Promise.resolve(), artw
   });
   const nodes = {
     'app-loader': { hidden: false },
-    'app-load-status': { className: 'visually-hidden', textContent: 'Loading LuckyLoop Casino…' },
+    'app-load-status': { className: 'visually-hidden', textContent: 'Loading NUMA SPIN…' },
     'app-load-retry': { hidden: true, addEventListener(type, action) { this[type] = action; } },
   };
   const pageImage = { ...element(), loading: 'lazy', decode: () => artwork };

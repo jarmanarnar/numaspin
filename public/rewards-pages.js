@@ -128,7 +128,7 @@ function dailyBonus(ctx, t) {
 
 function vipClub(ctx, t) {
   return t.stack(
-    t.card('A more personal experience', 'A first look at the Loop VIP Club. Membership rules and rewards are still being designed.', 'vip-club',
+    t.card('A more personal experience', 'A first look at the NUMA SPIN VIP Club. Membership rules and rewards are still being designed.', 'vip-club',
       t.n('span', 'feature-kicker', 'Program preview'), ctx.link('rank-system', 'View your demo rank')),
     t.n('h2', 'feature-section-title', 'Member benefits'),
     t.grid(
@@ -237,7 +237,7 @@ function coinback(ctx, t) {
 
 function partners(ctx, t) {
   return t.stack(
-    t.card('Grow the Loop', 'Two ways to introduce people to the platform.', 'partners'),
+    t.card('Grow the community', 'Two ways to introduce people to the platform.', 'partners'),
     t.grid(
       t.card('Invite Friends', 'A personal invitation code for sharing with your friends.', 'invite-friends', ctx.link('invite-friends', 'Your invitation link')),
       t.card('Affiliate Program', 'A separate area for creators, publishers and partner collaborations.', 'affiliate-program', ctx.link('affiliate-program', 'Explore the program')),

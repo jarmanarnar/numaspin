@@ -6,8 +6,13 @@
 
 .header-context { display: flex; align-items: center; gap: .5rem; min-width: 0; justify-self: start; }
 .site-logo { display: flex; flex: none; align-items: center; justify-content: center; width: 3.25rem; height: 1.75rem; border-radius: .25rem; }
-.site-logo__image { display: block; width: 100%; height: 100%; object-fit: contain; }
-.site-logo__image--wordmark { display: none; }
+.site-logo__wordmark {
+  color: var(--text-primary);
+  font: 700 1.125rem/1 var(--header-font-family);
+  letter-spacing: .02em;
+  text-align: center;
+  white-space: nowrap;
+}
 .header-context > .icon-button {
   box-sizing: border-box;
   flex: none;
@@ -121,8 +126,9 @@
 
 @media (min-width: 45rem) {
   .site-logo { width: 6.5rem; height: 2rem; }
-  .site-logo__image--wordmark { display: block; }
-  .site-logo__image--mark { display: none; }
+}
+@media (width < 45rem) {
+  .site-logo__wordmark { font-size: .75rem; white-space: normal; }
 }
 @media (max-width: 22.4375rem) { .site-logo { display: none; } }
 

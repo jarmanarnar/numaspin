@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "LuckyLoop Casino interface with a reviewed demo catalog and two demo coin balances.",
+  "description": "NUMA SPIN interface with a reviewed demo catalog and two demo coin balances.",
   "engines": {
     "node": ">=22"
   },

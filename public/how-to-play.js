@@ -1,7 +1,7 @@
 const steps = [
   {
     mode: 'both', label: '',
-    description: 'LOOP offers two ways to play: Gold Coins (GC) and Sweeps Coins (SC), each with its own balance.',
+    description: 'NUMA SPIN offers two ways to play: Gold Coins (GC) and Sweeps Coins (SC), each with its own balance.',
   },
   {
     mode: 'gc', label: 'GC MODE',
