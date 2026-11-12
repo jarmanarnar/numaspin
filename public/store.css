@@ -517,3 +517,6 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   .quick-buy .store-package__bonus { font-size: .8125rem; }
   .quick-buy .store-package__price { min-height: var(--touch-target); font-size: .9375rem; }
 }
+@media (width > 1024px) {
+  body[data-notifications-open="true"] .quick-buy .store-package { min-width: 10rem; }
+}

@@ -10,6 +10,7 @@ import { initRouter } from './routes.js';
 import { initStoreView } from './store-view.js';
 import { initPhoneVerification } from './phone-verification.js';
 import { initNotificationsDrawer } from './notifications-drawer.js';
+import { initProfileMenu } from './profile-menu.js';
 import { initRewardsPopover } from './rewards-popover.js';
 import { initFeatureView } from './feature-view.js';
 import { initGameDetails } from './game-details-view.js';
@@ -30,6 +31,7 @@ export async function initApplication() {
   const store = initStoreView({ router, account, auth, verifyPhone });
   const wallet = initWallet({ account, router, openStore: store.openStore });
   const features = initFeatureView({ router, wallet, account, auth, verifyPhone, openNotifications: notifications.open });
+  initProfileMenu({ account, router, openFeature: features.openFeature, notifications });
   const catalog = initCatalogView({ router, member: features.member });
   initCatalogToolbar();
   initGameDetails({ router, member: features.member });

@@ -67,6 +67,9 @@ export function createShelfIcon(id) {
     case 'settings':
       svg.append(path('m9.2 2-.5 3-2.1 1.2L3.8 5 1 9.8l2.3 2.1v2.2L1 16.2 3.8 21l2.8-1.2L8.7 21l.5 3h5.6l.5-3 2.1-1.2 2.8 1.2 2.8-4.8-2.3-2.1v-2.2L23 9.8 20.2 5l-2.8 1.2L15.3 5l-.5-3H9.2ZM12 8a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z'));
       break;
+    case 'logout':
+      svg.append(path('M4 4h10v5h-2V6H6v12h6v-3h2v5H4z'), path('M16 7l5 5-5 5-1.4-1.4 2.6-2.6H9v-2h8.2l-2.6-2.6z'));
+      break;
     case 'redeem':
       svg.append(path('M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 3v3h16V6H4Zm8 5-5 4h3v4h4v-4h3l-5-4Z'));
       break;

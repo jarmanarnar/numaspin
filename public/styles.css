@@ -174,7 +174,7 @@
       position: absolute;
       z-index: -1;
       inset-block: 0;
-      inset-inline: calc((100% - 100vw + var(--sidebar-width)) / 2);
+      inset-inline: calc((100% - 100vw + var(--sidebar-width) + var(--notifications-reserve, 0px)) / 2);
       border: 0;
       background: var(--surface-page);
       pointer-events: none;

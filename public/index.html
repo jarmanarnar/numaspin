@@ -37,6 +37,7 @@
   <link rel="stylesheet" href="how-to-play.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="wallet-header.css">
+  <link rel="stylesheet" href="profile-menu.css">
 </head>
 <body data-sidebar="collapsed" data-app-state="loading" data-app-starting="true" data-auth="guest" data-wallet-layout="currency-menu">
   <div id="app-loader" class="app-loader" role="status" aria-live="polite" lang="en" dir="ltr">
@@ -97,8 +98,19 @@
           <img class="header-rewards__gift" src="assets/rewards-gift.svg" width="32" height="32" alt="">
           <span id="header-rewards-count" class="header-rewards__count" aria-hidden="true" hidden></span>
         </button>
-        <a id="header-profile" class="header-member-action header-profile" href="#/profile" aria-label="My Profile" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M12 13.2c-3.7 0-6.5 2.4-6.5 5.7 0 1.1.7 1.6 1.7 1.6h9.6c1 0 1.7-.5 1.7-1.6 0-3.3-2.8-5.7-6.5-5.7Z"/></svg></a>
-        <button id="header-notifications" class="header-member-action header-member-shortcut" type="button" aria-label="Notifications" aria-haspopup="dialog" aria-controls="notifications-drawer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3a2 2 0 1 1 4 0 7 7 0 0 1 5 6v5l3 4H2l3-4V9a7 7 0 0 1 5-6Zm-1 17h6a3 3 0 0 1-6 0Z"/></svg></button>
+        <button id="header-profile" class="header-member-action header-profile" type="button" aria-label="Account menu" aria-controls="profile-menu" aria-expanded="false" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M12 13.2c-3.7 0-6.5 2.4-6.5 5.7 0 1.1.7 1.6 1.7 1.6h9.6c1 0 1.7-.5 1.7-1.6 0-3.3-2.8-5.7-6.5-5.7Z"/></svg></button>
+        <div id="profile-menu" class="profile-menu" role="group" aria-label="Account shortcuts" hidden>
+          <a class="profile-menu__item" href="#/profile" data-profile-icon="profile">My Profile</a>
+          <a class="profile-menu__item" href="#/history" data-profile-icon="history">Transaction History</a>
+          <a class="profile-menu__item" href="#/rank-system" data-profile-icon="rank-system">Rank System</a>
+          <a class="profile-menu__item" href="#/vip-club" data-profile-icon="vip-club">VIP Tiers</a>
+          <button class="profile-menu__item" type="button" data-profile-icon="notifications" data-profile-action="notifications" aria-controls="notifications-drawer">Notifications</button>
+          <a class="profile-menu__item" href="#/settings" data-profile-icon="settings">Settings</a>
+          <button class="profile-menu__item" type="button" data-profile-icon="logout" data-profile-action="logout">Log out</button>
+          <button class="profile-menu__item" type="button" data-profile-icon="redeem" data-profile-action="redeem" aria-haspopup="dialog" aria-controls="phone-verification-dialog">Redeem Coins</button>
+          <p id="profile-menu-status" class="profile-menu__status" role="status"></p>
+        </div>
+        <button id="header-notifications" class="header-member-action header-member-shortcut" type="button" aria-label="Notifications" aria-expanded="false" aria-controls="notifications-drawer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3a2 2 0 1 1 4 0 7 7 0 0 1 5 6v5l3 4H2l3-4V9a7 7 0 0 1 5-6Zm-1 17h6a3 3 0 0 1-6 0Z"/></svg></button>
       </nav>
       <div id="guest-header-actions" class="guest-header-actions">
         <button class="auth-icon-button guest-extra" type="button" data-auth-open="register" aria-label="Join to collect bonuses"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 11h8v10H4a1 1 0 0 1-1-1v-9Zm10 0h8v9a1 1 0 0 1-1 1h-7V11ZM2 6h20v4H2V6Zm10-1C6 5 4 3 6 1c3-2 6 4 6 4Zm0 0c6 0 8-2 6-4-3-2-6 4-6 4Z"/></svg></button>
@@ -292,24 +304,26 @@
       <p class="phone-verification__status" role="status"></p>
     </form>
   </dialog>
-  <dialog id="notifications-drawer" class="notifications-drawer" aria-labelledby="notifications-title" lang="en" dir="ltr">
+  <aside id="notifications-drawer" class="notifications-drawer" aria-labelledby="notifications-title" lang="en" dir="ltr" hidden>
     <header class="notifications-drawer__header">
-      <h2 id="notifications-title" tabindex="-1" autofocus>Notifications</h2>
+      <div class="notifications-drawer__heading">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3a2 2 0 1 1 4 0 7 7 0 0 1 5 6v5l3 4H2l3-4V9a7 7 0 0 1 5-6Zm-1 17h6a3 3 0 0 1-6 0Z"/></svg>
+        <h2 id="notifications-title" tabindex="-1">Notifications</h2>
+      </div>
+      <button class="notifications-drawer__read-all" type="button" disabled>Mark all as read</button>
       <button class="notifications-drawer__close icon-button" type="button" aria-label="Close notifications"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 4.8 12 10.4l5.6-5.6 1.6 1.6L13.6 12l5.6 5.6-1.6 1.6L12 13.6l-5.6 5.6-1.6-1.6L10.4 12 4.8 6.4Z"/></svg></button>
     </header>
     <div class="notifications-drawer__tabs" role="tablist" aria-label="Notification types">
-      <button id="notifications-tab-personal" type="button" role="tab" aria-selected="false" aria-controls="notifications-personal" tabindex="-1">Personal</button>
-      <button id="notifications-tab-platform" type="button" role="tab" aria-selected="true" aria-controls="notifications-platform">Platform</button>
+      <button id="notifications-tab-personal" type="button" role="tab" aria-selected="true" aria-controls="notifications-personal">Personal</button>
+      <button id="notifications-tab-platform" type="button" role="tab" aria-selected="false" aria-controls="notifications-platform" tabindex="-1">System</button>
     </div>
     <div class="notifications-drawer__body">
-      <section id="notifications-personal" class="notifications-drawer__panel" role="tabpanel" aria-labelledby="notifications-tab-personal" tabindex="0" hidden></section>
-      <section id="notifications-platform" class="notifications-drawer__panel" role="tabpanel" aria-labelledby="notifications-tab-platform" tabindex="0"></section>
+      <section id="notifications-personal" class="notifications-drawer__panel" role="tabpanel" aria-labelledby="notifications-tab-personal" tabindex="0"></section>
+      <section id="notifications-platform" class="notifications-drawer__panel" role="tabpanel" aria-labelledby="notifications-tab-platform" tabindex="0" hidden></section>
     </div>
-    <footer class="notifications-drawer__footer">
-      <button class="notifications-drawer__read-all" type="button" disabled>Mark All as Read</button>
-      <p class="visually-hidden" role="status"></p>
-    </footer>
-  </dialog>
+    <p class="visually-hidden" role="status"></p>
+  </aside>
+  <dialog id="notifications-drawer-modal" class="notifications-drawer-modal" aria-labelledby="notifications-title"></dialog>
   <main id="feature-view" class="page-content feature-view" lang="en" dir="ltr" hidden>
     <header id="feature-header" class="feature-header">
       <button id="feature-back" class="icon-button feature-back" type="button" aria-label="Back to lobby"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m15 4-8 8 8 8 1.4-1.4L9.8 12l6.6-6.6L15 4Z"/></svg></button>
