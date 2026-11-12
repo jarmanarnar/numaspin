@@ -152,16 +152,16 @@ button.header-member-action { cursor: pointer; }
 .wallet-menu-status:empty { display: none; }
 @media (max-width: 66rem) {
   .header-member-shortcut { display: none; }
-  body[data-wallet-layout="currency-menu"] .site-logo { width: 5.5rem; }
+  body[data-wallet-layout="currency-menu"]:not([data-auth="guest"]) .site-logo { width: 5.5rem; }
 }
 @media (width < 45rem) {
   .wallet-balance-trigger.wallet-switch { max-width: 8.25rem; }
   .header-buy-coins { width: 5.5rem; font-size: .75rem; }
-  body[data-wallet-layout="currency-menu"] .site-logo { width: 3.25rem; }
+  body[data-wallet-layout="currency-menu"]:not([data-auth="guest"]) .site-logo { width: 3.25rem; }
 }
 @media (max-width: 23.4375rem) {
   body[data-wallet-layout="currency-menu"] .top-bar__inner { width: calc(100% - 1.5rem); }
   .wallet-balance-trigger.wallet-switch { max-width: 7rem; gap: .375rem; padding-inline: .5rem; --wallet-value-size: .8125rem; }
   .header-buy-coins { width: 5rem; }
-  body[data-wallet-layout="currency-menu"] .site-logo { display: flex; width: 2rem; }
+  body[data-wallet-layout="currency-menu"]:not([data-auth="guest"]) .site-logo { display: flex; width: 2rem; }
 }
