@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { watch } from 'node:fs';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -17,8 +18,30 @@ const types = new Map(Object.entries({
   '.woff2': 'font/woff2',
 }));
 
-export function createAppServer() {
-  return http.createServer(async (request, response) => {
+function previewScript(revision) {
+  return [
+    '<script>',
+    'async function checkPreview() {',
+    '  try {',
+    '    const response = await fetch("./__reload", { cache: "no-store" });',
+    '    if (response.ok && await response.text() !== "' + revision + '") {',
+    '      location.reload();',
+    '      return;',
+    '    }',
+    '  } catch {',
+    '    // Retry after a temporary preview connection failure.',
+    '  }',
+    '  setTimeout(checkPreview, 1000);',
+    '}',
+    'setTimeout(checkPreview, 1000);',
+    '</script>',
+  ].join('\n');
+}
+
+export function createAppServer({ liveReload = false } = {}) {
+  let revision = Date.now();
+  const watcher = liveReload ? watch(publicRoot, { recursive: true }, () => { revision += 1; }) : null;
+  const server = http.createServer(async (request, response) => {
     if (!['GET', 'HEAD'].includes(request.method)) {
       response.writeHead(405, { Allow: 'GET, HEAD' }).end();
       return;
@@ -48,6 +71,11 @@ export function createAppServer() {
     }
     if (!pathname.startsWith(basePath)) { response.writeHead(404).end('Not found'); return; }
     const relative = pathname.slice(basePath.length) || 'index.html';
+    if (liveReload && relative === '__reload') {
+      response.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' });
+      response.end(request.method === 'HEAD' ? undefined : String(revision));
+      return;
+    }
     const target = path.resolve(publicRoot, relative);
     const relativeTarget = path.relative(publicRoot, target);
     const type = types.get(path.extname(target).toLowerCase());
@@ -57,7 +85,10 @@ export function createAppServer() {
     }
     try {
       if (!(await stat(target)).isFile()) throw new Error('Not a file');
-      const body = await readFile(target);
+      let body = await readFile(target);
+      if (liveReload && request.method === 'GET' && relative === 'index.html') {
+        body = body.toString('utf8').replace('</body>', previewScript(revision) + '\n</body>');
+      }
       response.writeHead(200, {
         'Content-Type': type, 'Cache-Control': 'no-store',
         'X-Content-Type-Options': 'nosniff',
@@ -65,10 +96,12 @@ export function createAppServer() {
       response.end(request.method === 'HEAD' ? undefined : body);
     } catch { response.writeHead(404).end('Not found'); }
   });
+  server.once('close', () => watcher?.close());
+  return server;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const server = createAppServer();
+  const server = createAppServer({ liveReload: process.argv.includes('--live-reload') });
   server.on('error', error => { console.error(error.message); process.exitCode = 1; });
   server.listen(Number(process.env.PORT || 4320), '127.0.0.1', () => {
     console.log(`LuckyLoop Casino: http://127.0.0.1:${server.address().port}${basePath}`);
