@@ -331,7 +331,7 @@ html:has(.store-dialog[open]) { overflow: hidden; }
 .quick-buy__title {
   gap: .5rem;
   margin: 0;
-  font-size: var(--shelf-title-size);
+  font-size: clamp(1.0625rem, 5.25vw, var(--shelf-title-size));
   line-height: 1.2;
 }
 
@@ -427,7 +427,6 @@ html:has(.store-dialog[open]) { overflow: hidden; }
 }
 
 .quick-buy .store-package__art {
-  order: 0;
   position: relative;
   isolation: isolate;
   min-height: 4rem;

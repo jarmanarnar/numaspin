@@ -193,7 +193,21 @@ button.header-member-action { cursor: pointer; }
 }
 @media (max-width: 23.4375rem) {
   body[data-wallet-layout="currency-menu"] .top-bar__inner { width: calc(100% - 1.5rem); }
-  .wallet-balance-trigger.wallet-switch { max-width: 7rem; gap: .375rem; padding-inline: .5rem; --wallet-value-size: .8125rem; }
-  .header-buy-coins { width: 5rem; }
+  body[data-wallet-layout="currency-menu"]:not([data-auth="guest"]) .top-bar__inner {
+    grid-template-columns: max-content minmax(0, 1fr) auto;
+    column-gap: .375rem;
+  }
+  .header-wallet-controls { justify-self: end; max-width: 100%; }
+  .wallet-balance-trigger.wallet-switch {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 7rem;
+    gap: .25rem;
+    padding-inline: .375rem;
+    --wallet-value-size: .75rem;
+  }
+  .wallet-balance-trigger.wallet-switch .coin-art { width: 1rem; height: 1rem; }
+  .wallet-balance-trigger .wallet-chevron { width: .625rem; }
+  .header-buy-coins { width: 4.5rem; padding-inline: .375rem; font-size: .6875rem; }
   body[data-wallet-layout="currency-menu"]:not([data-auth="guest"]) .site-logo { display: flex; width: 3.5rem; }
 }
