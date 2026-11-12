@@ -125,10 +125,11 @@
 
 
 @media (min-width: 45rem) {
-  .site-logo { width: 6.5rem; height: 2rem; }
+  .site-logo { justify-content: flex-start; width: 6.25rem; height: 2rem; }
+  .site-logo__wordmark { font-size: 1.125rem; }
 }
 @media (width < 45rem) {
-  .site-logo__wordmark { white-space: normal; }
+  .site-logo__wordmark { font-size: clamp(.625rem, 17cqi, .875rem); }
 }
 @media (max-width: 22.4375rem) { .site-logo { display: none; } }
 

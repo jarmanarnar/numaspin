@@ -14,8 +14,8 @@ function coin(code, size = 32) {
   img.setAttribute('aria-hidden', 'true');
   return img;
 }
-function renderPackages(list, headingTag) {
-  for (const packageInfo of STORE_PACKAGES) {
+function renderPackages(list, headingTag, { packages = STORE_PACKAGES, quickBuy = false } = {}) {
+  for (const packageInfo of packages) {
     const card = node('li', packageInfo.featured ? 'store-package store-package--featured' : 'store-package');
     card.dataset.packageId = packageInfo.id;
     if (packageInfo.badge) card.append(node('span', 'store-package__badge', packageInfo.badge));
@@ -23,21 +23,65 @@ function renderPackages(list, headingTag) {
     heading.append(coin('GC'), node('span', '', packageInfo.goldLabel), node('span', 'visually-hidden', 'Gold Coins'));
     const art = node('div', 'store-package__art');
     art.setAttribute('aria-hidden', 'true');
-    if (!packageInfo.featured) {
+    if (!packageInfo.featured || quickBuy) {
+      if (quickBuy && packageInfo.badge) {
+        const accent = coin('GC', 36);
+        accent.classList.add('quick-buy__accent-coin');
+        art.append(accent);
+      }
       art.append(coin('GC', 64));
       if (packageInfo.sweepsCoins) art.append(coin('SC', 44));
     }
     const bonus = node('p', 'store-package__bonus');
-    bonus.append(coin('SC', 20), node('strong', '', String(packageInfo.sweepsCoins)), node('span', '', 'FREE'), node('span', 'visually-hidden', 'Sweeps Coins'));
-    const price = node('button', 'store-package__price', formatPackagePrice(packageInfo));
+    if (packageInfo.sweepsCoins || !quickBuy) {
+      bonus.append(coin('SC', 20), node('strong', '', String(packageInfo.sweepsCoins)), node('span', '', 'FREE'), node('span', 'visually-hidden', 'Sweeps Coins'));
+    }
+    const priceLabel = formatPackagePrice(packageInfo);
+    const price = node('button', 'store-package__price', priceLabel);
     price.type = 'button';
     price.dataset.package = packageInfo.id;
     price.setAttribute('aria-haspopup', 'dialog');
-    price.setAttribute('aria-controls', 'phone-verification-dialog');
-    price.setAttribute('aria-label', `Buy ${packageInfo.goldLabel} GC${packageInfo.sweepsCoins ? ` plus ${packageInfo.sweepsCoins} free SC` : ''} for ${formatPackagePrice(packageInfo)}`);
-    card.append(heading, art, bonus, price);
+    if (!quickBuy) price.setAttribute('aria-controls', 'phone-verification-dialog');
+    price.setAttribute('aria-label', `Buy ${packageInfo.goldLabel} GC${packageInfo.sweepsCoins ? ` plus ${packageInfo.sweepsCoins} free SC` : ''} for ${priceLabel}`);
+    if (quickBuy) card.append(art, heading);
+    else card.append(heading, art);
+    if (bonus.hasChildNodes()) card.append(bonus);
+    card.append(price);
     list.append(card);
   }
+}
+
+function initQuickBuy(buyPackage, openStore) {
+  const section = document.querySelector('#home-quick-buy');
+  if (!section) return;
+
+  const list = section.querySelector('#quick-buy-packages');
+  const previous = section.querySelector('#quick-buy-prev');
+  const next = section.querySelector('#quick-buy-next');
+  const viewAll = section.querySelector('#quick-buy-view-all');
+  if (![list, previous, next, viewAll].every(Boolean)) return;
+
+  const packages = [...STORE_PACKAGES].sort((first, second) => Number(Boolean(second.badge)) - Number(Boolean(first.badge)));
+  renderPackages(list, 'h3', { packages, quickBuy: true });
+  list.addEventListener('click', buyPackage);
+  viewAll.addEventListener('click', openStore);
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function syncArrows() {
+    previous.disabled = list.scrollLeft <= 1;
+    next.disabled = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
+  }
+
+  function scrollPackages(direction) {
+    list.scrollBy({ left: direction * list.clientWidth * .75, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+  }
+
+  previous.addEventListener('click', () => scrollPackages(-1));
+  next.addEventListener('click', () => scrollPackages(1));
+  list.addEventListener('scroll', syncArrows, { passive: true });
+  new ResizeObserver(syncArrows).observe(list);
+
+  return section;
 }
 
 export function initStoreView({ router, account, auth, verifyPhone } = {}) {
@@ -66,7 +110,7 @@ export function initStoreView({ router, account, auth, verifyPhone } = {}) {
   });
 
   const desktop = window.matchMedia('(min-width: 45rem)');
-  const entryPoints = document.querySelectorAll('#header-buy-coins, #menu-buy, #wallet-add');
+  const entryPoints = document.querySelectorAll('#header-buy-coins, #menu-buy, #wallet-add, #quick-buy-view-all');
   function syncEntryPoints() {
     for (const button of entryPoints) {
       button.setAttribute('aria-controls', desktop.matches ? storeDialog.id : view.id);
@@ -87,10 +131,12 @@ export function initStoreView({ router, account, auth, verifyPhone } = {}) {
     });
   }
 
+  const quickBuy = initQuickBuy(buyPackage, openStore);
   account.subscribe(() => { if (!account.isSignedIn()) storeDialog.close(); });
 
   function render(route, meta = {}) {
     storeDialog.close();
+    if (quickBuy) quickBuy.hidden = route.type !== 'home';
     view.hidden = route.type !== 'store';
     if (!view.hidden) {
       document.body.dataset.page = 'store';

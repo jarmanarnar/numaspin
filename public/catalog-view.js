@@ -99,7 +99,7 @@ export function initCatalogView({ router, member } = {}) {
   const option = (value, text) => Object.assign(node('option', '', text), { value });
   providerSelect.replaceChildren(option('', 'All providers'), ...PROVIDERS.map(p => option(p.id, p.name)));
   categorySelect.replaceChildren(option('all', 'All Games'), ...FILTER_CATEGORIES.map(c => option(c.id, c.title)));
-  for (const category of CATEGORIES) {
+  for (const category of [{ id: 'lobby', title: 'Lobby' }, ...CATEGORIES]) {
     const button = node('button', 'catalog-category');
     button.type = 'button';
     button.dataset.category = category.id;
@@ -305,7 +305,9 @@ export function initCatalogView({ router, member } = {}) {
   const searchGames = query => router.navigate({ type: 'search', query: String(query).trim() });
   categories.addEventListener('click', event => {
     const button = event.target.closest('[data-category]');
-    if (button) openCategory(button.dataset.category);
+    if (!button) return;
+    if (button.dataset.category === 'lobby') openHome();
+    else openCategory(button.dataset.category);
   });
   shelves.addEventListener('click', event => {
     if (!(event.target instanceof Element)) return;

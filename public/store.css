@@ -303,3 +303,211 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   .store-dialog .store-package__bonus { font-size: .75rem; }
   .store-dialog .store-package--featured .store-package__amount { font-size: 1.375rem; }
 }
+
+.quick-buy {
+  --quick-buy-gap: .5rem;
+  min-width: 0;
+  margin-block-start: 1rem;
+  padding: .625rem;
+  border: 1px solid var(--top-bar-divider);
+  border-radius: .75rem;
+  background: #111513;
+  color: var(--text-primary);
+}
+
+.quick-buy__header,
+.quick-buy__title,
+.quick-buy__controls {
+  display: flex;
+  align-items: center;
+}
+
+.quick-buy__header {
+  justify-content: space-between;
+  gap: .5rem;
+  margin-block-end: .5rem;
+}
+
+.quick-buy__title {
+  gap: .5rem;
+  margin: 0;
+  font-size: var(--shelf-title-size);
+  line-height: 1.2;
+}
+
+.quick-buy__title svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+  color: var(--primary-accent);
+}
+
+.quick-buy__controls { gap: .25rem; }
+
+.quick-buy__all,
+.quick-buy__arrow {
+  display: grid;
+  min-height: 2.25rem;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--surface-control);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.quick-buy__all {
+  padding-inline: .625rem;
+  font-size: .75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.quick-buy__arrow { width: 2.25rem; }
+
+.quick-buy__arrow::before {
+  width: .4rem;
+  height: .4rem;
+  border: solid currentColor;
+  border-width: 1.5px 1.5px 0 0;
+  transform: translateX(-1px) rotate(45deg);
+  content: '';
+}
+
+.quick-buy__arrow--prev::before { transform: translateX(1px) rotate(-135deg); }
+.quick-buy__arrow:disabled { opacity: .4; cursor: default; }
+.quick-buy__all:hover, .quick-buy__arrow:hover:not(:disabled) { background: var(--control-hover); }
+
+.quick-buy button:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+.quick-buy__packages {
+  display: flex;
+  gap: var(--quick-buy-gap);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.quick-buy__packages::-webkit-scrollbar { display: none; }
+
+.quick-buy .store-package {
+  flex: 0 0 9rem;
+  gap: .375rem;
+  min-height: 11rem;
+  padding: .625rem;
+  overflow: hidden;
+  scroll-snap-align: start;
+  border-color: #303832;
+  border-radius: .625rem;
+  background: linear-gradient(165deg, #26322a, #1a201c 60%);
+}
+
+.quick-buy .store-package--featured {
+  border-color: #677331;
+  background: linear-gradient(160deg, #3b4425, #1e2416 70%);
+}
+
+.quick-buy .store-package__badge {
+  z-index: 1;
+  top: .4375rem;
+  max-width: calc(100% - .875rem);
+  padding: .1875rem .5rem;
+  background: #0f1510e6;
+  color: #d9eb9d;
+  font-size: .625rem;
+  white-space: nowrap;
+}
+
+.quick-buy .store-package__art {
+  order: 0;
+  position: relative;
+  isolation: isolate;
+  min-height: 4rem;
+  margin-block-start: .375rem;
+  padding: .25rem 0 0;
+  background: radial-gradient(ellipse at center, #b5e4402b, transparent 66%);
+}
+
+.quick-buy .store-package__art .coin-art {
+  width: 3.375rem;
+  height: 3.375rem;
+  filter: drop-shadow(0 .25rem .25rem #0008);
+  transform: rotate(-13deg);
+}
+
+.quick-buy .store-package__art .coin-art[src$="sweeps-coin.svg"] {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-block-start: 1.125rem;
+  margin-inline-start: -.625rem;
+  transform: rotate(18deg);
+}
+
+.quick-buy .store-package__art .quick-buy__accent-coin {
+  position: absolute;
+  z-index: -1;
+  inset-block-start: .3125rem;
+  inset-inline-start: calc(50% - 2.5rem);
+  width: 1.625rem;
+  height: 1.625rem;
+  transform: rotate(-34deg);
+}
+
+.quick-buy .store-package__art .quick-buy__accent-coin + .coin-art { margin: 0; }
+.quick-buy .store-package__amount { font-size: 1rem; }
+.quick-buy .store-package__amount .coin-art, .quick-buy .store-package__bonus .coin-art { width: 1rem; height: 1rem; }
+.quick-buy .store-package__bonus { min-height: 1.25rem; color: #acf0bf; font-size: .75rem; }
+.quick-buy .store-package__bonus > span { color: inherit; }
+
+.quick-buy .store-package__price {
+  min-height: 2.5rem;
+  border: 1px solid var(--primary-accent);
+  background: linear-gradient(#80ed13, #bbfa40);
+  box-shadow: inset 0 -2px #6ca017;
+  color: #141a07;
+  font-size: .875rem;
+}
+
+.quick-buy .store-package__price:hover { filter: brightness(1.07); }
+
+@media (min-width: 45rem) {
+  .quick-buy {
+    --quick-buy-gap: .875rem;
+    margin-block-start: 1.25rem;
+    padding: .875rem;
+  }
+
+  .quick-buy__header { margin-block-end: .75rem; }
+  .quick-buy__controls { gap: .375rem; }
+  .quick-buy__all, .quick-buy__arrow { min-height: 2.5rem; }
+  .quick-buy__all { font-size: .8125rem; }
+  .quick-buy__arrow { width: 2.5rem; }
+
+  .quick-buy .store-package {
+    flex-basis: calc((100% - 3 * var(--quick-buy-gap)) / 4);
+    min-width: 6.625rem;
+    min-height: 13rem;
+    padding: .75rem;
+  }
+
+  .quick-buy .store-package__art { min-height: 5.625rem; }
+  .quick-buy .store-package__art .coin-art { width: 4.25rem; height: 4.25rem; }
+  .quick-buy .store-package__art .coin-art[src$="sweeps-coin.svg"] { width: 3rem; height: 3rem; }
+  .quick-buy .store-package__art .quick-buy__accent-coin {
+    inset-block-start: .5rem;
+    inset-inline-start: calc(50% - 3.25rem);
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .quick-buy .store-package__amount { font-size: 1.25rem; }
+  .quick-buy .store-package__bonus { font-size: .8125rem; }
+  .quick-buy .store-package__price { min-height: var(--touch-target); font-size: .9375rem; }
+}

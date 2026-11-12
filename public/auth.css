@@ -11,12 +11,10 @@ body[data-auth="guest"] .site-logo__wordmark { white-space: nowrap; }
 .auth-icon-button svg { width: 1.125rem; height: 1.125rem; }
 .guest-header-actions :is(.auth-button, .auth-icon-button) { height: var(--header-control-size); min-height: var(--header-control-size); padding-block: 0; }
 .guest-header-actions .auth-icon-button { width: var(--header-control-size); padding-inline: 0; }
-.guest-welcome { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(19rem,1fr); overflow: hidden; border: 1px solid #29292c; border-radius: 1.125rem; background: #171719; margin-bottom: 1.75rem; }
-.guest-welcome__wireframe { min-width: 0; min-height: 20rem; box-sizing: border-box; border-radius: 1.05rem; background: var(--surface-card); }
-.guest-register-card { box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: stretch; padding: 2rem; text-align: center; }
-.guest-register-card h1 { margin: 0; color: #fafafa; font: 700 clamp(1.5rem,2.5vw,2rem)/1.2 var(--header-font-family); letter-spacing: -.055em; }
-.guest-register-card > p { margin: .75rem 0 1.5rem; color: #a9a9b1; font-size: .875rem; font-weight: 700; }
-.guest-register-now { width: 100%; min-height: 3.25rem; }
+.guest-welcome { display: grid; justify-items: center; margin-block: 2rem; padding: 1.25rem; border: 1px solid var(--top-bar-divider); border-radius: var(--radius-card); background: #171719; }
+.guest-register-card { width: min(100%, 24rem); text-align: center; }
+.guest-register-card h2 { margin: 0 0 .875rem; color: #fafafa; font: 700 1.25rem/1.2 var(--header-font-family); }
+.guest-register-now { width: 100%; }
 .auth-divider { display: flex; align-items: center; gap: 1rem; margin: 1.25rem 0 1rem; color: #8f9098; font: 700 .75rem/1.4 var(--header-font-family); white-space: nowrap; }
 .auth-divider::before, .auth-divider::after { content: ''; height: 1px; flex: 1; background: #2c2c31; }
 .auth-social-row { display: flex; gap: .5rem; }
@@ -26,7 +24,6 @@ body[data-auth="guest"] .site-logo__wordmark { white-space: nowrap; }
 .auth-facebook { display: inline-grid; place-items: center; width: 1.125rem; height: 1.125rem; border-radius: 50%; background: #1877f2; color: white; font: 700 1.125rem/1 Arial,sans-serif; padding-top: .125rem; box-sizing: border-box; }
 .auth-google { font: 800 1.125rem/1 Arial,sans-serif; background: conic-gradient(#4285f4 0deg 95deg,#34a853 95deg 185deg,#fbbc05 185deg 240deg,#ea4335 240deg 290deg,#4285f4 290deg); background-clip: text; color: transparent; }
 
-body[data-auth="guest"] #hero-carousel { display: none; }
 body[data-auth="member"] #guest-welcome { display: none; }
 body[data-auth="guest"] #menu-shortcuts, body[data-auth="guest"] nav[aria-label="My account"] { display: none !important; }
 body[data-auth="guest"] #menu-daily-badge { display: none; }
@@ -74,20 +71,11 @@ body[data-auth-dialog="open"] { overflow: hidden; }
 .auth-recovery h3 { color: #f5f5f7; font-size: 1rem; }
 .auth-dialog [hidden] { display: none !important; }
 .auth-button:focus-visible, .auth-social:focus-visible, .auth-tabs button:focus-visible, .auth-icon-button:focus-visible, .auth-close:focus-visible { outline: 2px solid var(--primary-accent); outline-offset: 3px; }
-@media (max-width: 59.99rem) {
-  .guest-welcome { grid-template-columns: minmax(0,1.2fr) minmax(17rem,1fr); }
-  .guest-register-card { padding: 1.5rem; }
-}
 @media (max-width: 44.99rem) {
   .guest-extra { display: none; }
   .guest-header-actions { gap: .375rem; }
   .guest-header-actions .auth-button { padding-inline: .875rem; }
   body[data-auth="guest"] .site-logo { width: 4.75rem; }
-  .guest-welcome { display: flex; flex-direction: column; border-radius: .875rem; margin-bottom: 1rem; }
-  .guest-welcome__wireframe { min-height: 14rem; border-radius: .8rem; }
-  .guest-register-card { padding: 1.5rem; }
-  .guest-register-card h1 { font-size: 1.75rem; }
-  .guest-register-card > p { margin-bottom: 1.25rem; }
   .auth-dialog { width: 25rem; border-radius: 1rem; }
   .auth-layout { display: block; min-height: 0; }
   .auth-wireframe { display: none; }

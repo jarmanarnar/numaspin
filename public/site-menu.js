@@ -15,7 +15,7 @@ export function initSiteMenu({ openCategory, openFavorites, openProviders, openS
   const categories = document.querySelector('#catalog-categories');
   const wallet = document.querySelector('#coin-wallet');
   const sidebar = document.querySelector('#site-sidebar');
-  const sidebarHeader = document.querySelector('#sidebar-header');
+  const sidebarFooter = document.querySelector('#sidebar-footer');
   const sidebarContent = document.querySelector('#sidebar-content');
   const menuContent = document.querySelector('#menu-content');
   const shortcuts = document.querySelector('#menu-shortcuts');
@@ -28,17 +28,15 @@ export function initSiteMenu({ openCategory, openFavorites, openProviders, openS
   const bottomTrigger = document.querySelector('#mobile-nav-menu');
   const bottomNav = document.querySelector('#mobile-nav');
   if (![trigger, dialog, navigation, buyButton, categories, wallet,
-    sidebar, sidebarHeader, sidebarContent, menuContent, shortcuts, mobileHeader].every(Boolean)) return;
+    sidebar, sidebarFooter, sidebarContent, menuContent, shortcuts, mobileHeader].every(Boolean)) return;
   initialized = true;
 
-  const triggerHome = trigger.parentElement;
-  const triggerSibling = trigger.nextSibling;
   const menuBackground = new Map();
   const desktopMedia = window.matchMedia('(min-width: 45rem)');
   let desktop = false;
-  let expanded = false;
+  let expanded = true;
   const sidebarStorageKey = 'luckyloop-sidebar-expanded-v1';
-  try { expanded = localStorage.getItem(sidebarStorageKey) === 'true'; } catch { /* Keep the default when storage is unavailable. */ }
+  try { expanded = localStorage.getItem(sidebarStorageKey) !== 'false'; } catch { /* Keep the default when storage is unavailable. */ }
   let afterClose = null;
   let pendingClose = false;
   let tooltipTarget = null;
@@ -254,8 +252,7 @@ export function initSiteMenu({ openCategory, openFavorites, openProviders, openS
     desktop = desktopMedia.matches;
     sidebar.hidden = !desktop;
     if (desktop) {
-      sidebarHeader.append(trigger);
-      sidebarHeader.append(shortcuts);
+      sidebarFooter.append(shortcuts);
       sidebarContent.append(menuContent);
       trigger.removeAttribute('aria-haspopup');
       trigger.setAttribute('aria-controls', 'site-sidebar');
@@ -263,7 +260,6 @@ export function initSiteMenu({ openCategory, openFavorites, openProviders, openS
       observeState();
       syncMenu();
     } else {
-      triggerHome.insertBefore(trigger, triggerSibling);
       mobileHeader.append(shortcuts);
       dialog.append(menuContent);
       trigger.setAttribute('aria-haspopup', 'dialog');
@@ -292,7 +288,7 @@ export function initSiteMenu({ openCategory, openFavorites, openProviders, openS
     dialog.show();
     setMenuBackgroundInert(true);
     trigger.setAttribute('aria-expanded', 'true');
-    buyButton.focus({ preventScroll: true });
+    [buyButton, dailyButton, searchButton].find(button => button?.getClientRects().length)?.focus({ preventScroll: true });
     observeState();
   }
 

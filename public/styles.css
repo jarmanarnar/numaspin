@@ -11,7 +11,7 @@
       background: #000;
       /* Fixed component steps keep the lobby proportional across viewport sizes. */
       --fluid-step: clamp(0rem, calc(.833333vw - .166667rem), .5rem);
-      --header-control-size: 2.25rem;
+      --header-control-size: 2.75rem;
       --header-side-control-width: 3.5rem;
       --header-padding: .875rem;
       --header-gap: .5rem;
@@ -26,7 +26,7 @@
       --wallet-copy-gap: .25rem;
       --wallet-inset-end: .1875rem;
       --control-radius: 999px;
-      --page-max-width: 71rem;
+      --page-max-width: 96rem;
       --page-gutter: 1rem;
       --page-inset: max(var(--page-gutter), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
       --page-content-width: min(var(--page-max-width), calc(100% - 2 * var(--page-inset)));
@@ -38,14 +38,13 @@
       --gold-accent: #e8bf65;
       --catalog-accent: var(--gold-accent);
       --surface-control: #20212a;
-      --catalog-active-background: var(--surface-control);
       --text-primary: #eeeef2;
       --text-secondary: #9b9ba5;
       --control-hover: color-mix(in srgb, var(--surface-control), var(--text-primary) 8%);
       --surface-card: #1c1c22;
-      --radius-card: .5rem;
-      --sidebar-rail-width: 4.5rem;
-      --sidebar-expanded-width: 14.5rem;
+      --radius-card: .75rem;
+      --sidebar-rail-width: 5.25rem;
+      --sidebar-expanded-width: 17.125rem;
       --sidebar-width: 0px;
       --sidebar-surface: #000;
       --sidebar-divider: var(--top-bar-divider);
@@ -157,7 +156,7 @@
       align-items: center;
       gap: .5rem;
       height: var(--catalog-toolbar-height);
-      margin-block-start: .25rem;
+      margin-block-start: 1rem;
       padding-block: var(--catalog-toolbar-padding);
     }
     .catalog-toolbar::before {
@@ -224,7 +223,7 @@
     .catalog-categories {
       display: flex;
       align-items: center;
-      gap: .25rem;
+      gap: .5rem;
       min-width: 0;
       height: var(--catalog-control-size);
       box-sizing: border-box;
@@ -242,10 +241,10 @@
       flex: none;
       height: var(--catalog-control-size);
       padding: 0 .875rem;
-      border: 0;
-      border-radius: 10px;
-      background: transparent;
-      color: #a5a5af;
+      border: 1px solid var(--top-bar-divider);
+      border-radius: var(--control-radius);
+      background: #121215;
+      color: #c0c0c9;
       font-size: .875rem;
       font-weight: 600;
       white-space: nowrap;
@@ -254,7 +253,8 @@
     .catalog-category:hover { background: #1b1b20; color: #fff; }
     .catalog-category .game-shelf__icon { width: 16px; height: 16px; color: currentColor; }
     .catalog-category[aria-pressed="true"] {
-      background: var(--catalog-active-background);
+      border-color: #494b32;
+      background: #252818;
       color: var(--text-primary);
     }
     .catalog-category[aria-pressed="true"] .game-shelf__icon { color: var(--catalog-accent); }
@@ -485,7 +485,10 @@
     }
     .provider-track.is-grid .provider-launch { height: auto; min-height: var(--touch-target); aspect-ratio: 2.1; }
     @media (min-width: 48rem) {
-      :root { --page-gutter: 1.5rem; --game-card-gap: 1rem; --shelf-title-size: 1.5rem; --game-title-size: .875rem; }
+      :root { --game-card-gap: 1rem; --shelf-title-size: 1.5rem; --game-title-size: .875rem; }
       .game-shelf + .game-shelf { margin-block-start: 3rem; }
     }
-    @media (min-width: 64rem) { :root { --page-gutter: 3rem; } }
+    @media (min-width: 64rem) {
+      :root { --lobby-top-gap: 1.75rem; }
+      #lobby-view { margin-top: var(--lobby-top-gap); }
+    }

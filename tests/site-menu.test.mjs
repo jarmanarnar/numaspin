@@ -115,7 +115,7 @@ function menuPage({ desktop = false, routeFromGame = false, storage = new Map(),
   document.body.dataset.view = 'lobby';
   const ids = ['menu-toggle', 'site-menu', 'menu-navigation', 'menu-buy', 'menu-redeem',
     'catalog-categories', 'coin-wallet', 'site-logo', 'other-dialog',
-    'site-sidebar', 'sidebar-header', 'sidebar-content', 'menu-content', 'menu-shortcuts',
+    'site-sidebar', 'sidebar-footer', 'sidebar-content', 'menu-content', 'menu-shortcuts',
     'menu-mobile-header', 'menu-search', 'menu-daily-bonus', 'menu-daily-amount', 'menu-daily-badge', 'menu-tooltip', 'site-search', 'site-search-input',
     'bottom-menu', 'mobile-nav', 'mobile-nav-menu', 'mobile-nav-store', 'mobile-nav-lobby', 'mobile-nav-redeem', 'mobile-nav-profile',
     'lobby-view', 'game-view', 'store-view', 'feature-view', 'game-details-view'];
@@ -136,9 +136,9 @@ function menuPage({ desktop = false, routeFromGame = false, storage = new Map(),
   nodes['site-menu'].append(nodes['menu-mobile-header'], nodes['menu-content']);
   nodes['menu-mobile-header'].append(nodes['menu-shortcuts']);
   nodes['menu-shortcuts'].append(nodes['menu-buy'], nodes['menu-redeem']);
-  nodes['menu-content'].append(nodes['menu-search'], nodes['menu-daily-bonus'], nodes['menu-navigation']);
+  nodes['menu-content'].append(nodes['menu-daily-bonus'], nodes['menu-search'], nodes['menu-navigation']);
   nodes['menu-daily-bonus'].append(nodes['menu-daily-amount'], nodes['menu-daily-badge']);
-  nodes['site-sidebar'].append(nodes['sidebar-header'], nodes['sidebar-content']);
+  nodes['site-sidebar'].append(nodes['sidebar-content'], nodes['sidebar-footer']);
   nodes['mobile-nav'].append(...['menu', 'store', 'lobby', 'redeem', 'profile'].map(action => nodes[`mobile-nav-${action}`]));
   document.body.append(headerParent, nodes['site-sidebar'], nodes['lobby-view'], nodes['game-view'], nodes['store-view'],
     nodes['feature-view'], nodes['game-details-view'], nodes['mobile-nav'], nodes['site-menu']);
@@ -286,7 +286,7 @@ function menuPage({ desktop = false, routeFromGame = false, storage = new Map(),
 test('desktop sidebar retains its width across refresh and a mobile layout round trip', () => {
   const storage = new Map();
   const first = menuPage({ desktop: true, storage });
-  first.nodes['menu-toggle'].click();
+  assert.equal(first.document.body.dataset.sidebar, 'expanded');
   const refreshed = menuPage({ desktop: true, storage });
   assert.equal(refreshed.document.body.dataset.sidebar, 'expanded');
   assert.equal(refreshed.nodes['menu-toggle'].getAttribute('aria-expanded'), 'true');
@@ -301,9 +301,9 @@ test('desktop sidebar retains its width across refresh and a mobile layout round
 test('blocked browser storage does not prevent sidebar initialization or toggling', () => {
   const storage = { get() { throw new Error('Blocked'); }, set() { throw new Error('Blocked'); } };
   const page = menuPage({ desktop: true, storage });
-  assert.equal(page.document.body.dataset.sidebar, 'collapsed');
-  page.nodes['menu-toggle'].click();
   assert.equal(page.document.body.dataset.sidebar, 'expanded');
+  page.nodes['menu-toggle'].click();
+  assert.equal(page.document.body.dataset.sidebar, 'collapsed');
 });
 
 test('menu opens once, focuses BUY, and only lists available collections', () => {
@@ -320,6 +320,13 @@ test('menu opens once, focuses BUY, and only lists available collections', () =>
   for (const category of CATEGORIES) assert.equal(!!page.item(category.id), getGamesForCategory(category.id).length > 0);
   assert.equal(page.casinoItems.children.at(-1), page.item('providers'));
   assert.equal(page.categoryButtons.has('providers'), false);
+});
+
+test('the drawer focuses Daily Bonus when the guest shortcuts are hidden', () => {
+  const page = menuPage();
+  page.nodes['menu-shortcuts'].hidden = true;
+  page.nodes['menu-toggle'].click();
+  assert.equal(page.document.activeElement, page.nodes['menu-daily-bonus']);
 });
 
 test('sidebar keeps categories and Search without a Lobby destination', () => {
@@ -627,6 +634,7 @@ test('REDEEM opens a separate preview destination instead of performing a transa
 
 test('Social Casino opens the desktop rail, toggles the categories in place and restores focus when closing', () => {
   const page = menuPage({ desktop: true });
+  page.nodes['menu-toggle'].click();
   const { socialCasino, casinoItems } = page;
   assert.equal(socialCasino.dataset.menuDisclosure, 'social-casino');
   assert.equal(socialCasino.getAttribute('aria-label'), 'Social Casino');
@@ -671,7 +679,6 @@ test('mobile Social Casino reveals the active category and respects a manual col
 
 test('Partners unfolds in place with only Referral and Affiliate, and keeps hidden children out of focus', () => {
   const page = menuPage({ desktop: true });
-  page.nodes['menu-toggle'].click();
   const partners = page.feature('partners');
   const list = partners.nextSibling;
   assert.equal(partners.getAttribute('aria-expanded'), 'false');
@@ -691,6 +698,7 @@ test('Partners unfolds in place with only Referral and Affiliate, and keeps hidd
 
 test('Partners expands from the desktop icon rail and its children close when the rail collapses', () => {
   const page = menuPage({ desktop: true });
+  page.nodes['menu-toggle'].click();
   const partners = page.feature('partners');
   partners.click();
   assert.equal(page.document.body.dataset.sidebar, 'expanded');
@@ -780,29 +788,28 @@ test('entering a game closes an existing menu and still allows reopening the gam
 test('desktop sidebar toggles without creating a modal or moving its shared content twice', () => {
   const page = menuPage({ desktop: true });
   assert.equal(page.nodes['site-sidebar'].hidden, false);
-  assert.equal(page.nodes['menu-toggle'].parentElement, page.nodes['sidebar-header']);
-  assert.equal(page.nodes['menu-shortcuts'].parentElement, page.nodes['sidebar-header']);
+  assert.equal(page.nodes['menu-toggle'].parentElement, page.headerParent);
+  assert.equal(page.nodes['menu-shortcuts'].parentElement, page.nodes['sidebar-footer']);
   assert.equal(page.nodes['menu-content'].parentElement, page.nodes['sidebar-content']);
-  assert.equal(page.document.body.dataset.sidebar, 'collapsed');
-  assert.equal(page.nodes['menu-toggle'].getAttribute('aria-expanded'), 'false');
+  assert.equal(page.document.body.dataset.sidebar, 'expanded');
+  assert.equal(page.nodes['menu-toggle'].getAttribute('aria-expanded'), 'true');
   assert.equal(page.nodes['site-menu'].open, false);
 
   page.nodes['menu-toggle'].click();
-  assert.equal(page.document.body.dataset.sidebar, 'expanded');
-  assert.equal(page.nodes['site-sidebar'].dataset.expanded, 'true');
-  assert.equal(page.nodes['menu-toggle'].getAttribute('aria-expanded'), 'true');
-  page.nodes['menu-toggle'].click();
   assert.equal(page.document.body.dataset.sidebar, 'collapsed');
   assert.equal(page.nodes['site-sidebar'].dataset.expanded, 'false');
+  assert.equal(page.nodes['menu-toggle'].getAttribute('aria-expanded'), 'false');
+  page.nodes['menu-toggle'].click();
+  assert.equal(page.document.body.dataset.sidebar, 'expanded');
+  assert.equal(page.nodes['site-sidebar'].dataset.expanded, 'true');
   assert.equal(page.nodes['site-menu'].open, false);
   assert.equal(page.calls.includes('menu:open'), false);
-  assert.deepEqual(page.nodes['sidebar-header'].children, [page.nodes['menu-toggle'], page.nodes['menu-shortcuts']]);
+  assert.deepEqual(page.nodes['sidebar-footer'].children, [page.nodes['menu-shortcuts']]);
   assert.deepEqual(page.nodes['sidebar-content'].children, [page.nodes['menu-content']]);
 });
 
 test('desktop collection, Providers and BUY actions run immediately without a drawer close event', () => {
   const page = menuPage({ desktop: true });
-  page.nodes['menu-toggle'].click();
   page.socialCasino.click();
   page.item('popular').click();
   assert.equal(page.calls.at(-1), 'category:popular');
@@ -829,20 +836,19 @@ test('switching an open mobile drawer to desktop closes it while the bottom bar 
   assert.equal(page.nodes['mobile-nav'].parentElement, page.document.body);
   assert.equal(page.nodes['site-menu'].open, false);
   assert.equal(page.nodes['site-sidebar'].hidden, false);
-  assert.equal(page.nodes['menu-toggle'].parentElement, page.nodes['sidebar-header']);
-  assert.equal(page.nodes['menu-shortcuts'].parentElement, page.nodes['sidebar-header']);
+  assert.equal(page.nodes['menu-toggle'].parentElement, page.headerParent);
+  assert.equal(page.nodes['menu-shortcuts'].parentElement, page.nodes['sidebar-footer']);
   assert.equal(page.nodes['menu-content'].parentElement, page.nodes['sidebar-content']);
-  assert.equal(page.document.body.dataset.sidebar, 'collapsed');
+  assert.equal(page.document.body.dataset.sidebar, 'expanded');
   page.flushClose();
   assert.ok(page.observers[0].targets.length > 0, 'desktop observation survives a queued native close event');
   page.nodes['menu-toggle'].click();
-  assert.equal(page.document.body.dataset.sidebar, 'expanded');
+  assert.equal(page.document.body.dataset.sidebar, 'collapsed');
   assert.equal(page.nodes['site-menu'].open, false);
 });
 
 test('switching an expanded desktop sidebar to mobile restores the header and starts with a closed drawer', () => {
   const page = menuPage({ desktop: true });
-  page.nodes['menu-toggle'].click();
   page.resize(false);
   page.flushClose();
   assert.equal(page.nodes['site-sidebar'].hidden, true);
@@ -861,6 +867,7 @@ test('switching an expanded desktop sidebar to mobile restores the header and st
 
 test('collapsed desktop navigation shows one custom tooltip for pointer and keyboard interaction', () => {
   const page = menuPage({ desktop: true });
+  page.nodes['menu-toggle'].click();
   const item = page.socialCasino;
   const sidebar = page.nodes['site-sidebar'];
   const tooltip = page.nodes['menu-tooltip'];
@@ -886,6 +893,7 @@ test('collapsed desktop navigation shows one custom tooltip for pointer and keyb
 
 test('expanded and mobile navigation never show collapsed-rail tooltips', () => {
   const page = menuPage({ desktop: true });
+  page.nodes['menu-toggle'].click();
   const item = page.socialCasino;
   const sidebar = page.nodes['site-sidebar'];
   const tooltip = page.nodes['menu-tooltip'];
@@ -909,6 +917,7 @@ test('expanded and mobile navigation never show collapsed-rail tooltips', () => 
 
 test('collapsed tooltips are dismissed by navigation but remain available in the game shell', () => {
   const page = menuPage({ desktop: true });
+  page.nodes['menu-toggle'].click();
   const item = page.socialCasino;
   const sidebar = page.nodes['site-sidebar'];
   const tooltip = page.nodes['menu-tooltip'];
@@ -976,7 +985,6 @@ test('game shell category and provider navigation opens its own destination afte
 test('Escape collapses an expanded desktop sidebar without also leaving the game', () => {
   const page = menuPage({ desktop: true, routeFromGame: true });
   page.document.body.dataset.view = 'game';
-  page.nodes['menu-toggle'].click();
   assert.equal(page.document.body.dataset.sidebar, 'expanded');
   const event = page.nodes['site-sidebar'].emit('keydown', { key: 'Escape' });
   assert.equal(event.defaultPrevented, true);

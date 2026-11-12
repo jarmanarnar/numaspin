@@ -34,6 +34,7 @@ export async function initApplication() {
   initCatalogToolbar();
   initGameDetails({ router, member: features.member });
   const search = initSiteSearch(catalog);
+  document.querySelector('#header-search')?.addEventListener('click', search.openSearch);
   const help = initHowToPlay({ router, openHome: catalog.openHome });
   const menu = initSiteMenu({ ...catalog, ...search, ...features, ...help, openStore: store.openStore });
   initMobileNav({ ...catalog, ...search, ...features, ...menu });

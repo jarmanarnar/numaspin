@@ -48,10 +48,6 @@
     <button id="app-load-retry" class="app-loader__retry" type="button" hidden>Try again</button>
     <noscript><p>Enable JavaScript to load the site.</p></noscript>
   </div>
-  <aside id="site-sidebar" class="site-sidebar" aria-label="Casino sidebar" lang="en" dir="ltr" hidden>
-    <div id="sidebar-header" class="site-sidebar__header"></div>
-    <div id="sidebar-content" class="site-sidebar__content"></div>
-  </aside>
   <header class="top-bar" aria-label="בר עליון">
     <div class="top-bar__inner" lang="en" dir="ltr">
       <div class="header-context">
@@ -63,6 +59,10 @@
       <div id="coin-wallet" class="coin-wallet" data-currency="GC" aria-label="Demo wallet" role="group" hidden>
         <button id="wallet-add" class="icon-button" type="button" aria-label="Open Store" aria-controls="store-view"><img id="wallet-add-art" src="assets/coins/add-gold.svg" width="48" height="48" alt="" aria-hidden="true"></button>
       </div>
+      <button id="header-search" class="header-search icon-button" type="button" aria-label="Search games" aria-controls="lobby-view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+        <span>Search</span>
+      </button>
       <div id="header-wallet-controls" class="header-wallet-controls" hidden>
         <button id="coin-type-switch" class="wallet-switch wallet-balance-trigger" type="button" aria-label="Choose currency" aria-haspopup="dialog" aria-expanded="false" aria-controls="wallet-currency-menu" hidden>
           <img id="currency-coin" class="coin-art" src="assets/coins/gold-coin.svg" width="18" height="18" alt="" aria-hidden="true">
@@ -97,6 +97,10 @@
       </div>
     </div>
   </header>
+  <aside id="site-sidebar" class="site-sidebar" aria-label="Casino sidebar" lang="en" dir="ltr" hidden>
+    <div id="sidebar-content" class="site-sidebar__content"></div>
+    <div id="sidebar-footer" class="site-sidebar__footer"></div>
+  </aside>
   <section id="rewards-popover" class="rewards-popover" popover="auto" aria-labelledby="rewards-popover-title" lang="en" dir="ltr">
     <header class="rewards-popover__header">
       <h2 id="rewards-popover-title">My Rewards</h2>
@@ -116,33 +120,35 @@
     </section>
   </section>
   <main class="page-content" id="lobby-view">
-    <section id="guest-welcome" class="guest-welcome" aria-label="Welcome to NUMA SPIN" lang="en" dir="ltr">
-      <div class="guest-welcome__wireframe" aria-hidden="true"></div>
-      <div class="guest-register-card">
-        <h1>Welcome to NUMA SPIN</h1>
-        <p>You’re almost in</p>
-        <button class="auth-button primary-button guest-register-now" type="button" data-auth-open="register">Register Now</button>
-        <div class="auth-divider"><span>Or continue with</span></div>
-        <div class="auth-social-row">
-          <button class="auth-social" type="button" data-auth-social="Google"><span class="auth-google" aria-hidden="true">G</span>Google</button>
-          <button class="auth-social" type="button" data-auth-social="Facebook"><span class="auth-facebook" aria-hidden="true">f</span>Facebook</button>
-        </div>
-      </div>
-    </section>
     <section class="hero-carousel" id="hero-carousel" role="region" aria-roledescription="carousel" aria-label="Featured promotions" lang="en" dir="ltr">
       <div class="hero-carousel__viewport" id="hero-viewport" tabindex="0" aria-label="Promotional banners" aria-live="off">
         <div class="hero-carousel__track" id="hero-track">
-          <article class="hero-carousel__slide" data-hero-title="Banner 1" role="group" aria-roledescription="slide" aria-label="1 of 4: Banner 1">
-            <div class="hero-banner" aria-hidden="true"></div>
+          <article class="hero-carousel__slide" data-hero-title="Editor's Picks" role="group" aria-roledescription="slide" aria-label="1 of 3: Editor's Picks">
+            <div class="hero-banner hero-banner--picks">
+              <div class="hero-banner__copy">
+                <h2>Editor’s Picks</h2>
+                <button class="hero-banner__action" type="button" data-hero-category="picks">Explore picks</button>
+              </div>
+              <img class="hero-banner__art" src="./assets/hero/picks-art.webp" width="1402" height="1122" alt="" fetchpriority="high">
+            </div>
           </article>
-          <article class="hero-carousel__slide" data-hero-title="Banner 2" role="group" aria-roledescription="slide" aria-label="2 of 4: Banner 2">
-            <div class="hero-banner" aria-hidden="true"></div>
+          <article class="hero-carousel__slide" data-hero-title="Slots" role="group" aria-roledescription="slide" aria-label="2 of 3: Slots">
+            <div class="hero-banner hero-banner--slots">
+              <div class="hero-banner__copy">
+                <h2>Slots</h2>
+                <button class="hero-banner__action" type="button" data-hero-category="slots">Browse slots</button>
+              </div>
+              <img class="hero-banner__art" src="./assets/hero/slots-art.webp" width="1402" height="1122" alt="" loading="lazy">
+            </div>
           </article>
-          <article class="hero-carousel__slide" data-hero-title="Banner 3" role="group" aria-roledescription="slide" aria-label="3 of 4: Banner 3">
-            <div class="hero-banner" aria-hidden="true"></div>
-          </article>
-          <article class="hero-carousel__slide" data-hero-title="Banner 4" role="group" aria-roledescription="slide" aria-label="4 of 4: Banner 4">
-            <div class="hero-banner" aria-hidden="true"></div>
+          <article class="hero-carousel__slide" data-hero-title="Tap Games" role="group" aria-roledescription="slide" aria-label="3 of 3: Tap Games">
+            <div class="hero-banner hero-banner--tap">
+              <div class="hero-banner__copy">
+                <h2>Tap Games</h2>
+                <button class="hero-banner__action" type="button" data-hero-category="tap">Browse tap games</button>
+              </div>
+              <img class="hero-banner__art" src="./assets/hero/tap-art.webp" width="1347" height="1168" alt="" loading="lazy">
+            </div>
           </article>
         </div>
       </div>
@@ -151,6 +157,23 @@
       </div>
       <p class="visually-hidden" id="hero-status" aria-live="polite" aria-atomic="true"></p>
     </section>
+    <section class="quick-buy" id="home-quick-buy" aria-labelledby="quick-buy-title" lang="en" dir="ltr" hidden>
+      <div class="quick-buy__header">
+        <h2 id="quick-buy-title" class="quick-buy__title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 3h3l2.5 12h11L21 7H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/>
+          </svg>
+          Quick Buy
+        </h2>
+        <div class="quick-buy__controls">
+          <button id="quick-buy-view-all" class="quick-buy__all" type="button" aria-controls="store-view">View all</button>
+          <button id="quick-buy-prev" class="quick-buy__arrow quick-buy__arrow--prev" type="button" aria-label="Previous coin packages" aria-controls="quick-buy-packages" disabled></button>
+          <button id="quick-buy-next" class="quick-buy__arrow" type="button" aria-label="Next coin packages" aria-controls="quick-buy-packages" disabled></button>
+        </div>
+      </div>
+      <ul id="quick-buy-packages" class="quick-buy__packages" aria-label="Coin packages"></ul>
+    </section>
+
     <section class="catalog-toolbar" aria-label="Game filters" lang="en" dir="ltr">
       <div class="catalog-category-rail">
         <nav id="catalog-categories" class="catalog-categories" aria-label="Game types and categories"></nav>
@@ -160,7 +183,7 @@
     </section>
     <form id="lobby-search-form" class="catalog-page-search lobby-search" role="search" aria-label="Search lobby games" lang="en" dir="ltr">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10.5 2a8.5 8.5 0 1 0 5.26 15.17l4.53 4.54 1.42-1.42-4.54-4.53A8.5 8.5 0 0 0 10.5 2Zm0 2a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13Z"/></svg>
-      <input id="lobby-search-input" type="search" placeholder="Enter at least 1 character" aria-label="Search games" autocomplete="off">
+      <input id="lobby-search-input" type="search" placeholder="Search games" aria-label="Search games" autocomplete="off">
     </form>
     <header id="catalog-page-header" class="catalog-page-header" lang="en" dir="ltr" hidden>
       <button id="catalog-page-back" class="catalog-page-back icon-button" type="button" aria-label="Back to lobby"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m15 4-8 8 8 8 1.4-1.4L9.8 12l6.6-6.6L15 4Z"/></svg></button>
@@ -178,6 +201,17 @@
     <div id="catalog-shelves" class="catalog-shelves" lang="en" dir="ltr"></div>
     <div id="catalog-empty" class="catalog-empty" role="status" lang="en" dir="ltr" hidden>No games found. Try another search, category or provider.</div>
     <div id="catalog-pagination" class="catalog-pagination" lang="en" dir="ltr" hidden><p id="catalog-page-count" role="status"></p><button id="catalog-more" class="text-control" type="button" hidden>Show more</button></div>
+    <section id="guest-welcome" class="guest-welcome" aria-label="Welcome to NUMA SPIN" lang="en" dir="ltr">
+      <div class="guest-register-card">
+        <h2>Join NUMA SPIN</h2>
+        <button class="auth-button primary-button guest-register-now" type="button" data-auth-open="register">Register Now</button>
+        <div class="auth-divider"><span>Or continue with</span></div>
+        <div class="auth-social-row">
+          <button class="auth-social" type="button" data-auth-social="Google"><span class="auth-google" aria-hidden="true">G</span>Google</button>
+          <button class="auth-social" type="button" data-auth-social="Facebook"><span class="auth-facebook" aria-hidden="true">f</span>Facebook</button>
+        </div>
+      </div>
+    </section>
     <section id="catalog-provider-details" class="catalog-provider-details" lang="en" dir="ltr" hidden></section>
   </main>
   <main class="game-view" id="game-view" aria-label="Game demo" tabindex="-1" lang="en" dir="ltr" hidden>
@@ -200,17 +234,17 @@
   <dialog id="site-menu" class="site-menu" aria-label="Casino menu" lang="en" dir="ltr">
     <div id="menu-mobile-header" class="site-menu__mobile-header">
       <div id="menu-shortcuts" class="site-menu__shortcuts">
-        <button id="menu-buy" class="site-menu__shortcut site-menu__shortcut--buy" type="button" aria-label="BUY" data-tooltip="BUY"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M20 4H4v2h16V4Zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1Zm-9 4H6v-4h6v4Z"/></svg><span class="site-menu__shortcut-label">BUY</span></button>
+        <button id="menu-buy" class="site-menu__shortcut site-menu__shortcut--buy" type="button" data-tooltip="Buy Coins"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M20 4H4v2h16V4Zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1Zm-9 4H6v-4h6v4Z"/></svg><span class="site-menu__shortcut-label">Buy Coins</span></button>
         <button id="menu-redeem" class="site-menu__shortcut" type="button" aria-label="REDEEM" aria-haspopup="dialog" aria-controls="phone-verification-dialog" data-tooltip="REDEEM" disabled><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5 4h14a2 2 0 0 1 2 2v13H3V6a2 2 0 0 1 2-2Zm1 3v3h12V7H6Zm2 6H6v3h2v-3Zm5 0h-2v3h2v-3Zm5 0h-2v3h2v-3Z"/></svg><span class="site-menu__shortcut-label">REDEEM</span></button>
       </div>
     </div>
     <div id="menu-content" class="site-menu__scroll">
-      <button id="menu-search" class="site-menu__search" type="button" aria-label="Search games" data-tooltip="Search" aria-controls="lobby-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="site-menu__label">Search</span></button>
       <button id="menu-daily-bonus" class="site-menu__daily" type="button" aria-label="Daily Bonus" data-tooltip="Daily Bonus" aria-controls="feature-view">
         <span class="site-menu__daily-art" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M8 24h32v18H8z" fill="currentColor" opacity=".3"/><path d="M5 17h38v10H5z" fill="currentColor"/><path d="M21 17h6v25h-6z" fill="currentColor"/><path d="M24 17C9 17 9 5 16 6c5 0 8 11 8 11Zm0 0C39 17 39 5 32 6c-5 0-8 11-8 11Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></svg></span>
         <span class="site-menu__daily-copy"><strong id="menu-daily-amount">1,000 GC</strong><span>Daily Bonus</span></span>
         <span id="menu-daily-badge" class="site-menu__daily-badge">Ready</span>
       </button>
+      <button id="menu-search" class="site-menu__search" type="button" aria-label="Search games" data-tooltip="Search" aria-controls="lobby-view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="site-menu__label">Search</span></button>
       <nav id="menu-navigation" class="site-menu__navigation" aria-label="Casino navigation"></nav>
     </div>
   </dialog>
