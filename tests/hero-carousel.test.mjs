@@ -34,9 +34,12 @@ function heroPage({ reduced = false, intersection = true, starting = false } = {
     }
     contains(node) { for (let next = node; next; next = next.parent) if (next === this) return true; return false; }
     closest(selector) {
-      const property = { '[data-hero-index]': 'heroIndex', '[data-hero-category]': 'heroCategory' }[selector];
-      if (!property) throw new Error(`Unexpected selector: ${selector}`);
-      return Object.hasOwn(this.dataset, property) ? this : this.parent?.closest(selector) || null;
+      const properties = {
+        '[data-hero-index]': ['heroIndex'],
+        '[data-hero-category], [data-hero-feature]': ['heroCategory', 'heroFeature'],
+      }[selector];
+      if (!properties) throw new Error(`Unexpected selector: ${selector}`);
+      return properties.some(property => Object.hasOwn(this.dataset, property)) ? this : this.parent?.closest(selector) || null;
     }
     scrollIntoView(options) { calls.push({ action: 'scroll-results', options }); }
     focus(options) { document.activeElement = this; calls.push({ action: 'focus-results', options }); }
@@ -63,10 +66,16 @@ function heroPage({ reduced = false, intersection = true, starting = false } = {
   nodes['hero-viewport'].append(nodes['hero-track']);
   nodes['hero-controls'].append(nodes['hero-dots']);
   nodes['hero-controls'].hidden = true;
-  const slides = ['Our Picks', 'Game Providers', 'Tap Games', 'Slots'].map((title, index) => {
+  const slides = [
+    ["Editor's Picks", { heroCategory: 'picks' }],
+    ['Slots', { heroCategory: 'slots' }],
+    ['Tap Games', { heroCategory: 'tap' }],
+    ['Daily Bonus', { heroFeature: 'daily-bonus' }],
+    ['VIP Tiers', { heroFeature: 'vip-club' }],
+  ].map(([title, destination]) => {
     const slide = new Node(), cta = new Node();
     slide.dataset.heroTitle = title;
-    cta.dataset.heroCategory = ['picks', 'providers', 'tap', 'slots'][index];
+    Object.assign(cta.dataset, destination);
     slide.append(cta);
     nodes['hero-track'].append(slide);
     return slide;
@@ -92,13 +101,14 @@ function heroPage({ reduced = false, intersection = true, starting = false } = {
   nodes['catalog-categories'].querySelector = selector => categoryButtons[selector.match(/^\[data-category="([^"]+)"\]$/)?.[1]] || null;
   const listeners = new Map();
   const emit = type => { for (const callback of listeners.get(type) || []) callback(api, type); };
+  const slideCount = slides.length;
   const api = {
     selectedScrollSnap: () => selected,
-    scrollSnapList: () => [0, 1, 2, 3],
+    scrollSnapList: () => [...slides.keys()],
     on(type, callback) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(callback); return api; },
-    scrollTo(index, jump) { calls.push({ action: 'scrollTo', index, jump }); selected = ((index % 4) + 4) % 4; emit('select'); },
-    scrollNext(jump) { calls.push({ action: 'scrollNext', jump }); selected = (selected + 1) % 4; emit('select'); },
-    scrollPrev(jump) { calls.push({ action: 'scrollPrev', jump }); selected = (selected + 3) % 4; emit('select'); },
+    scrollTo(index, jump) { calls.push({ action: 'scrollTo', index, jump }); selected = ((index % slideCount) + slideCount) % slideCount; emit('select'); },
+    scrollNext(jump) { calls.push({ action: 'scrollNext', jump }); selected = (selected + 1) % slideCount; emit('select'); },
+    scrollPrev(jump) { calls.push({ action: 'scrollPrev', jump }); selected = (selected + slideCount - 1) % slideCount; emit('select'); },
   };
   const motion = new Node(); motion.matches = reduced;
   const window = new Node();
@@ -121,6 +131,7 @@ function heroPage({ reduced = false, intersection = true, starting = false } = {
   const catalog = {
     openHome() { provider = ''; category = 'all'; calls.push({ action: 'navigate', id: 'all' }); },
     openCategory(id) { provider = ''; category = id; calls.push({ action: 'navigate', id }); },
+    openFeature(id) { calls.push({ action: 'feature', id }); },
     openProviders(options) {
       providerCalls.push(options);
       calls.push({ action: 'navigate', id: 'providers' });
@@ -159,7 +170,7 @@ test('banner autoplay waits until the loader and first revealed paint finish', (
   assert.equal([...page.timers.values()][0].duration, 6000);
 });
 
-test('initializes once, reveals controls, and labels the four promotions with one selected dot', () => {
+test('initializes once, reveals controls, and labels the five promotions with one selected dot', () => {
   const page = heroPage();
   page.context.initHeroCarousel();
   assert.equal(page.factories, 1);
@@ -167,10 +178,10 @@ test('initializes once, reveals controls, and labels the four promotions with on
   assert.equal(page.nodes['hero-carousel'].dataset.ready, 'true');
   assert.equal(page.nodes['hero-controls'].hidden, false);
   const dots = page.nodes['hero-dots'].children;
-  assert.equal(dots.length, 4);
-  assert.equal(dots[0].getAttribute('aria-label'), 'Show promotion 1: Our Picks');
-  assert.deepEqual(dots.map(dot => dot.getAttribute('aria-pressed')), ['true', 'false', 'false', 'false']);
-  assert.equal(page.slides[3].getAttribute('aria-label'), '4 of 4: Slots');
+  assert.equal(dots.length, 5);
+  assert.equal(dots[0].getAttribute('aria-label'), "Show promotion 1: Editor's Picks");
+  assert.deepEqual(dots.map(dot => dot.getAttribute('aria-pressed')), ['true', 'false', 'false', 'false', 'false']);
+  assert.equal(page.slides[4].getAttribute('aria-label'), '5 of 5: VIP Tiers');
   assert.equal(page.nodes['hero-status'].textContent, '');
   assert.equal(page.timers.size, 0, 'intersection must confirm visibility before autoplay');
 });
@@ -193,15 +204,15 @@ test('saved site motion preference pauses autoplay and fill without overriding t
 test('dots and viewport keys navigate through the loop and announce only manual changes', () => {
   const page = heroPage();
   page.nodes['hero-viewport'].emit('keydown', { key: 'ArrowLeft' });
-  assert.equal(page.nodes['hero-dots'].children[3].getAttribute('aria-pressed'), 'true');
-  assert.match(page.nodes['hero-status'].textContent, /Promotion 4 of 4: Slots/);
+  assert.equal(page.nodes['hero-dots'].children[4].getAttribute('aria-pressed'), 'true');
+  assert.match(page.nodes['hero-status'].textContent, /Promotion 5 of 5: VIP Tiers/);
   page.nodes['hero-viewport'].emit('keydown', { key: 'ArrowRight' });
   assert.equal(page.nodes['hero-dots'].children[0].getAttribute('aria-pressed'), 'true');
   page.nodes['hero-dots'].children[2].children[0].click();
   assert.equal(page.nodes['hero-dots'].children[2].getAttribute('aria-pressed'), 'true');
   const key = page.nodes['hero-viewport'].emit('keydown', { key: 'ArrowRight' });
   assert.equal(key.defaultPrevented, true);
-  assert.match(page.nodes['hero-status'].textContent, /Promotion 4 of 4/);
+  assert.match(page.nodes['hero-status'].textContent, /Promotion 4 of 5: Daily Bonus/);
   const before = page.calls.length;
   assert.equal(page.nodes['hero-viewport'].emit('keydown', { key: 'ArrowLeft', altKey: true }).defaultPrevented, false);
   assert.equal(page.calls.length, before);
@@ -215,7 +226,7 @@ test('one six-second timer rotates without live announcements and stops for game
   assert.equal(page.nodes['hero-dots'].children[1].getAttribute('aria-pressed'), 'true');
   assert.equal(page.nodes['hero-status'].textContent, '');
   assert.equal(page.timers.size, 1);
-  page.select(3); page.fireTimer();
+  page.select(4); page.fireTimer();
   assert.equal(page.nodes['hero-dots'].children[0].getAttribute('aria-pressed'), 'true');
   assert.equal(page.nodes['hero-status'].textContent, '');
   page.document.body.dataset.view = 'game'; page.mutations[0].callback();
@@ -271,9 +282,9 @@ test('reduced motion disables autoplay, jumps manual navigation, and updates wit
 });
 
 test('banner CTAs navigate directly without clicking a hidden toolbar or resetting home first', () => {
-  for (let index = 0; index < 4; index++) {
+  for (let index = 0; index < 3; index++) {
     const page = heroPage({ reduced: index === 2 });
-    const id = ['picks', 'providers', 'tap', 'slots'][index];
+    const id = ['picks', 'slots', 'tap'][index];
     page.nodes['catalog-categories'].querySelector = () => { throw new Error('banner navigation must not query toolbar buttons'); };
     page.slides[index].children[0].click();
     assert.deepEqual(page.calls.filter(call => call.action === 'navigate').map(call => call.id), [id]);
@@ -281,12 +292,24 @@ test('banner CTAs navigate directly without clicking a hidden toolbar or resetti
       'the destination owns rendering, scroll and focus');
     assert.equal(page.provider, '');
     assert.equal(page.category, id);
+  }
+  for (const id of ['all', 'providers']) {
+    const page = heroPage();
+    page.slides[0].children[0].dataset.heroCategory = id;
+    page.slides[0].children[0].click();
+    assert.deepEqual(page.calls.filter(call => call.action === 'navigate').map(call => call.id), [id]);
     if (id === 'providers') assert.equal(page.providerCalls.length, 1);
   }
+});
+
+test('reward banners open their feature routes without dispatching a catalog action', () => {
   const page = heroPage();
-  page.slides[0].children[0].dataset.heroCategory = 'all';
-  page.slides[0].children[0].click();
-  assert.deepEqual(page.calls.filter(call => call.action === 'navigate').map(call => call.id), ['all']);
+  page.slides[3].children[0].click();
+  page.slides[4].children[0].click();
+  assert.deepEqual(page.calls.slice(1), [
+    { action: 'feature', id: 'daily-bonus' },
+    { action: 'feature', id: 'vip-club' },
+  ]);
 });
 
 test('leaving the lobby pauses the hidden hero immediately and resumes the remaining countdown on return', () => {

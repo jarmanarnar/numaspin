@@ -2,7 +2,7 @@ import EmblaCarousel from './vendor/embla-carousel/embla-carousel.esm.js';
 
 let initialized = false;
 
-export function initHeroCarousel({ openHome, openCategory, openProviders } = {}) {
+export function initHeroCarousel({ openHome, openCategory, openProviders, openFeature } = {}) {
   if (initialized) return;
   const root = document.querySelector('#hero-carousel');
   const viewport = document.querySelector('#hero-viewport');
@@ -165,14 +165,15 @@ export function initHeroCarousel({ openHome, openCategory, openProviders } = {})
 
   root.addEventListener('click', event => {
     if (!(event.target instanceof Element)) return;
-    const button = event.target.closest('[data-hero-category]');
+    const button = event.target.closest('[data-hero-category], [data-hero-feature]');
     if (!button || !root.contains(button)) return;
-    const id = button.dataset.heroCategory;
-    if (!id) return;
+    const { heroCategory, heroFeature } = button.dataset;
+    if (!heroCategory && !heroFeature) return;
     event.preventDefault();
-    if (id === 'all') openHome?.();
-    else if (id === 'providers') openProviders?.();
-    else openCategory?.(id);
+    if (heroFeature) openFeature?.(heroFeature);
+    else if (heroCategory === 'all') openHome?.();
+    else if (heroCategory === 'providers') openProviders?.();
+    else openCategory?.(heroCategory);
   });
 
   carousel.on('select', () => { updateSelection(); scheduleRotation(); });

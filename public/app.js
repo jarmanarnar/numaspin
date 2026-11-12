@@ -40,7 +40,7 @@ export async function initApplication() {
   const help = initHowToPlay({ router, openHome: catalog.openHome });
   const menu = initSiteMenu({ ...catalog, ...search, ...features, ...help, openStore: store.openStore });
   initMobileNav({ ...catalog, ...search, ...features, ...menu });
-  initHeroCarousel(catalog);
+  initHeroCarousel({ ...catalog, openFeature: features.openFeature });
 
   document.querySelector('.site-logo')?.addEventListener('click', event => {
     event.preventDefault();
