@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#03170e">
   <meta name="application-name" content="NUMA SPIN">
   <meta name="description" content="NUMA SPIN — a casino lobby prototype with provider catalogs, game collections, and a two-currency demo wallet.">
   <title>NUMA SPIN</title>
   <style id="app-loader-styles">
     body:is([data-app-state="loading"], [data-app-state="error"]) > :not(#app-loader) { visibility: hidden; }
-    .app-loader { position: fixed; z-index: 1000; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 1.5rem; background: #000; color: #eeeef2; text-align: center; touch-action: none; }
+    .app-loader { position: fixed; z-index: 1000; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 1.5rem; background: var(--surface-inset, #000703); color: var(--text-primary, #e6ece9); text-align: center; touch-action: none; }
     .app-loader[hidden] { display: none !important; }
     .app-loader__brand { --app-loader-duration: 1800ms; display: grid; justify-items: center; gap: .75rem; font: 700 1.5rem/1.1 Arial, sans-serif; letter-spacing: .08em; white-space: nowrap; }
-    .app-loader__progress { width: 6rem; height: .1875rem; overflow: hidden; border-radius: 1rem; background: #2a2a30; }
+    .app-loader__progress { width: 6rem; height: .1875rem; overflow: hidden; border-radius: 1rem; background: var(--surface-raised, #102b20); }
     .app-loader__progress::after { content: ''; display: block; width: 50%; height: 100%; border-radius: inherit; background: currentColor; animation: app-loader-slide var(--app-loader-duration) linear infinite; }
     .app-loader__brand[data-paused="true"] .app-loader__progress::after { animation-play-state: paused; }
     .app-loader__brand[data-reduced="true"] .app-loader__progress::after { animation: none; }
-    .app-loader__message { margin: 0; color: #9b9ba5; font: .875rem Arial, sans-serif; }
-    .app-loader__retry { min-height: 2.75rem; padding: .625rem 1.25rem; border: 0; border-radius: .5rem; background: #20212a; color: #eeeef2; font-weight: 700; cursor: pointer; }
+    .app-loader__message { margin: 0; color: var(--text-secondary, #bfd0c8); font: .875rem Arial, sans-serif; }
+    .app-loader__retry { min-height: 2.75rem; padding: .625rem 1.25rem; border: 1px solid var(--accent-border); border-radius: .5rem; background: var(--primary-fill); color: var(--primary-text); font-weight: 700; cursor: pointer; }
     @keyframes app-loader-slide { from { transform: translateX(-100%); } to { transform: translateX(200%); } }
     @media (prefers-reduced-motion: reduce) { .app-loader__progress::after { animation: none; } }
   </style>
@@ -236,8 +236,8 @@
   <main id="game-details-view" class="page-content game-details-view" lang="en" dir="ltr" hidden></main>
   <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation" lang="en" dir="ltr" hidden>
     <button id="mobile-nav-menu" class="mobile-nav__item" data-mobile-action="menu" type="button" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="3" rx="1.5"/><rect x="3" y="10.5" width="18" height="3" rx="1.5"/><rect x="3" y="16" width="18" height="3" rx="1.5"/></svg><span class="mobile-nav__label">Menu</span></button>
-    <button id="mobile-nav-store" class="mobile-nav__item" data-mobile-action="store" type="button" aria-controls="store-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M20 4H4v2h16V4Zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1Zm-9 4H6v-4h6v4Z"/></svg><span class="mobile-nav__label">Store</span></button>
     <button id="mobile-nav-lobby" class="mobile-nav__item" data-mobile-action="lobby" type="button" aria-controls="lobby-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3Z"/></svg><span class="mobile-nav__label">Lobby</span></button>
+    <button id="mobile-nav-store" class="mobile-nav__item" data-mobile-action="store" type="button" aria-controls="store-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M20 4H4v2h16V4Zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1Zm-9 4H6v-4h6v4Z"/></svg><span class="mobile-nav__label">Packages</span></button>
     <button id="mobile-nav-redeem" class="mobile-nav__item" data-mobile-action="redeem" type="button" aria-haspopup="dialog" aria-controls="phone-verification-dialog"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 3v3h16V6H4Zm8 5-5 4h3v4h4v-4h3l-5-4Z"/></svg><span class="mobile-nav__label">Redeem</span></button>
     <button id="mobile-nav-profile" class="mobile-nav__item" data-mobile-action="profile" type="button" aria-controls="feature-view"><svg class="mobile-nav__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm-6 12a6 6 0 0 1 12 0H6Z"/></svg><span class="mobile-nav__label">Profile</span></button>
   </nav>
@@ -276,9 +276,9 @@
   <dialog id="phone-verification-dialog" class="phone-verification" aria-labelledby="phone-verification-title" lang="en" dir="ltr">
     <form method="dialog"><button class="phone-verification__close icon-button" type="submit" aria-label="Close phone verification"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.4 4.8 12 10.4l5.6-5.6 1.6 1.6L13.6 12l5.6 5.6-1.6 1.6L12 13.6l-5.6 5.6-1.6-1.6L10.4 12 4.8 6.4Z"/></svg></button></form>
     <svg class="phone-verification__art" viewBox="0 0 104 104" fill="none" aria-hidden="true" focusable="false">
-      <defs><linearGradient id="verification-phone-shade" x1="24" y1="14" x2="76" y2="89" gradientUnits="userSpaceOnUse"><stop stop-color="#565a67"/><stop offset="1" stop-color="#202129"/></linearGradient><linearGradient id="verification-check-shade" x1="63" y1="61" x2="88" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="#c7ff3c"/><stop offset="1" stop-color="#78ed00"/></linearGradient></defs>
-      <g transform="rotate(9 51 50)"><rect x="25" y="8" width="48" height="83" rx="12" fill="url(#verification-phone-shade)" stroke="#6b707e" stroke-width="2"/><rect x="30" y="13" width="38" height="73" rx="8" fill="#1d1f27" stroke="#3f424d"/><path d="M43 18h12" stroke="#666a78" stroke-width="3" stroke-linecap="round"/><g fill="#edeef3"><circle cx="39" cy="47" r="2.4"/><circle cx="49" cy="47" r="2.4"/><circle cx="59" cy="47" r="2.4"/></g></g>
-      <circle cx="73" cy="74" r="18" fill="url(#verification-check-shade)" stroke="#252919" stroke-width="3"/><path d="m66 74 5 5 9-10" stroke="#172000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs><linearGradient id="verification-phone-shade" x1="24" y1="14" x2="76" y2="89" gradientUnits="userSpaceOnUse"><stop stop-color="var(--surface-raised)"/><stop offset="1" stop-color="var(--surface-inset)"/></linearGradient><linearGradient id="verification-check-shade" x1="63" y1="61" x2="88" y2="91" gradientUnits="userSpaceOnUse"><stop stop-color="var(--success-accent)"/><stop offset="1" stop-color="var(--primary-accent)"/></linearGradient></defs>
+      <g transform="rotate(9 51 50)"><rect x="25" y="8" width="48" height="83" rx="12" fill="url(#verification-phone-shade)" stroke="var(--text-muted)" stroke-width="2"/><rect x="30" y="13" width="38" height="73" rx="8" fill="var(--surface-control)" stroke="var(--surface-border)"/><path d="M43 18h12" stroke="var(--text-muted)" stroke-width="3" stroke-linecap="round"/><g fill="var(--text-primary)"><circle cx="39" cy="47" r="2.4"/><circle cx="49" cy="47" r="2.4"/><circle cx="59" cy="47" r="2.4"/></g></g>
+      <circle cx="73" cy="74" r="18" fill="url(#verification-check-shade)" stroke="var(--accent-soft)" stroke-width="3"/><path d="m66 74 5 5 9-10" stroke="var(--primary-text)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <h2 id="phone-verification-title">Phone Verification</h2>
     <form id="phone-verification-number-form" class="phone-verification__form" method="dialog" autocomplete="off">

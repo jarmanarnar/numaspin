@@ -41,9 +41,9 @@
 }
 
 .hero-banner {
-  --banner-base: #171a13;
-  --banner-edge: #242618;
-  --banner-glow: #606d28;
+  --banner-edge: #0b2c1e;
+  --banner-glow: #225f3b;
+  --banner-glow-spread: 56%;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
@@ -51,24 +51,22 @@
   align-items: center;
   height: clamp(13rem, 26cqi, 17.5rem);
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, .09);
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius-card);
-  color: #fff;
+  color: var(--text-primary);
   background:
-    radial-gradient(ellipse at 74% 52%, var(--banner-glow), transparent 54%),
-    linear-gradient(107deg, var(--banner-base) 25%, var(--banner-edge));
+    radial-gradient(ellipse at 76% 52%, var(--banner-glow), transparent var(--banner-glow-spread)),
+    linear-gradient(107deg, var(--surface-inset) 25%, var(--banner-edge));
 }
 
 .hero-banner--slots {
-  --banner-base: #141a17;
-  --banner-edge: #142c22;
-  --banner-glow: #236a43;
+  --banner-edge: #0b2d24;
+  --banner-glow: #186948;
 }
 
 .hero-banner--tap {
-  --banner-base: #181720;
-  --banner-edge: #241b35;
-  --banner-glow: #534377;
+  --banner-edge: #092826;
+  --banner-glow: #165347;
 }
 
 .hero-banner__copy {
@@ -90,10 +88,10 @@
 .hero-banner__action {
   min-height: 2.625rem;
   padding: .625rem 1.125rem;
-  border: 0;
+  border: 1px solid var(--surface-border);
   border-radius: .625rem;
-  background: var(--primary-accent);
-  color: #101608;
+  background: var(--primary-fill);
+  color: var(--primary-text);
   font: inherit;
   font-size: .875rem;
   font-weight: 700;
@@ -140,14 +138,14 @@
 .hero-carousel__dot-mark {
   display: block;
   width: 100%;
-  height: .1875rem;
+  height: .125rem;
   overflow: hidden;
   border-radius: 999px;
-  background: #37383e;
+  background: var(--surface-border);
 }
 
 .hero-carousel__dot[aria-pressed="true"] .hero-carousel__dot-mark {
-  background: #777c6d;
+  background: color-mix(in srgb, var(--primary-accent) 36%, var(--surface-inset));
 }
 
 .hero-carousel__dot-fill {
@@ -190,10 +188,8 @@
   }
 
   .hero-banner {
+    --banner-glow-spread: 64%;
     height: 16.125rem;
-    background:
-      radial-gradient(ellipse at 75% 52%, var(--banner-glow), transparent 64%),
-      linear-gradient(107deg, var(--banner-base) 25%, var(--banner-edge));
   }
 
   .hero-banner__copy {

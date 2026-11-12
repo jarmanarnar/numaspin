@@ -1,4 +1,3 @@
-/* Store wireframe uses the same surfaces, spacing and original coin assets. */
 .store-view {
   box-sizing: border-box;
   min-width: 0;
@@ -32,6 +31,9 @@
 }
 
 .store-package {
+  --package-border: var(--surface-border);
+  --package-surface: var(--surface-card);
+  --package-badge: var(--accent-soft);
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -40,13 +42,30 @@
   gap: .875rem;
   min-width: 0;
   padding: 1.25rem 1rem 1rem;
-  border: 1px solid var(--top-bar-divider);
+  border: 1px solid var(--package-border);
   border-radius: var(--radius-card);
-  background: var(--surface-card);
+  background: var(--package-surface);
   text-align: center;
 }
 
-.store-package--featured { grid-column: 1 / -1; }
+.store-package--featured {
+  --package-border: #238cc1;
+  --package-surface: #092b38;
+  --package-badge: #075a8d;
+  grid-column: 1 / -1;
+}
+
+.store-package[data-package-id="gc-300k"] {
+  --package-border: #9262ea;
+  --package-surface: #231936;
+  --package-badge: #722bc1;
+}
+
+.store-package[data-package-id="gc-625k"] {
+  --package-border: #d86393;
+  --package-surface: #301a27;
+  --package-badge: #a8275a;
+}
 
 .store-package__badge {
   position: absolute;
@@ -57,9 +76,9 @@
   max-width: 100%;
   box-sizing: border-box;
   padding: .25rem .625rem;
-  border-radius: var(--radius-card);
-  background: var(--surface-control);
-  color: var(--catalog-accent);
+  border-radius: 999px;
+  background: var(--package-badge);
+  color: #fff;
   font-size: .6875rem;
   font-weight: 700;
   line-height: 1.25;
@@ -91,7 +110,17 @@
 
 .store-package__art .coin-art { width: 3.5rem; height: 3.5rem; filter: none; }
 .store-package__art .coin-art + .coin-art { margin-left: -.625rem; margin-top: 1rem; }
-.store-package--featured .store-package__art { border-radius: var(--radius-card); background: var(--surface-control); }
+.store-package--featured .store-package__art {
+  border-radius: var(--radius-card);
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--package-border) 16%, transparent), transparent 72%);
+}
+
+.store-package--featured .store-package__art:empty {
+  background:
+    url("assets/coins/sweeps-coin.svg") calc(50% + 1.25rem) 65% / 2.5rem no-repeat,
+    url("assets/coins/gold-coin.svg") calc(50% - .875rem) 45% / 3.75rem no-repeat,
+    radial-gradient(ellipse at center, color-mix(in srgb, var(--package-border) 16%, transparent), transparent 72%);
+}
 
 .store-package__bonus {
   display: flex;
@@ -106,7 +135,7 @@
   line-height: 1.4;
 }
 
-.store-package__bonus > span { color: var(--text-secondary); font-size: .625rem; font-weight: 700; }
+.store-package__bonus > span { color: var(--primary-accent); font-size: .625rem; font-weight: 700; }
 .store-package__bonus .coin-art { width: 1.125rem; height: 1.125rem; filter: none; }
 .store-package__bonus strong { min-width: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 
@@ -116,10 +145,10 @@
   min-height: var(--touch-target);
   margin-top: auto;
   padding: .625rem .375rem;
-  border: 0;
-  border-radius: var(--radius-card);
-  background: var(--surface-control);
-  color: var(--text-primary);
+  border: 1px solid var(--surface-border);
+  border-radius: .5rem;
+  background: var(--primary-fill);
+  color: var(--primary-text);
   font: inherit;
   font-size: 1rem;
   font-weight: 700;
@@ -129,7 +158,8 @@
   cursor: pointer;
 }
 
-.store-package__price:hover { background: var(--control-hover); }
+.store-package__price:hover { filter: brightness(1.07); }
+.store-package__price:focus-visible { outline: 2px solid var(--primary-accent); outline-offset: 2px; }
 .store-preview-note { max-width: 45rem; margin: 1rem auto 0; color: var(--text-secondary); font-size: .75rem; line-height: 1.5; text-align: center; }
 
 @media (max-width: 32rem) {
@@ -164,9 +194,9 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   padding: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  border: 1px solid #303137;
+  border: 1px solid var(--surface-border);
   border-radius: 1.25rem;
-  background: #111113;
+  background: var(--surface-inset);
   box-shadow: 0 1.5rem 4rem #0008;
   color: var(--text-primary);
   font-family: var(--header-font-family);
@@ -183,8 +213,8 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   justify-content: space-between;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--top-bar-divider);
-  background: #111113;
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--surface-inset);
 }
 
 .store-dialog__header form { margin: 0; }
@@ -194,15 +224,16 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   width: var(--touch-target);
   height: var(--touch-target);
   min-height: 0;
-  border-radius: 50%;
+  border: 1px solid var(--surface-border);
+  border-radius: .5rem;
   background: var(--surface-control);
   color: var(--text-secondary);
 }
 .store-dialog__close.icon-button:hover { background: var(--control-hover); color: var(--text-primary); }
 .store-dialog__close svg { width: 1rem; height: 1rem; }
-.store-dialog :is(.store-dialog__close, .store-package__price):focus-visible {
-  outline: 2px solid #c7ff3c;
-  outline-offset: 3px;
+.store-dialog__close:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
 }
 
 .store-dialog__body { padding: 1.125rem 1.5rem; }
@@ -210,7 +241,6 @@ html:has(.store-dialog[open]) { overflow: hidden; }
 .store-dialog .store-package {
   gap: .375rem;
   padding: .875rem .75rem .75rem;
-  border-color: #2d2e34;
   border-radius: .75rem;
 }
 .store-dialog .store-package__badge {
@@ -220,9 +250,6 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   max-width: calc(100% - 1.25rem);
   transform: none;
   padding: .1875rem .375rem;
-  border-radius: .25rem;
-  background: #323024;
-  color: #f4d783;
   font-size: .5625rem;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -243,19 +270,12 @@ html:has(.store-dialog[open]) { overflow: hidden; }
 .store-dialog .store-package__amount .coin-art,
 .store-dialog .store-package__bonus .coin-art { width: .875rem; height: .875rem; }
 .store-dialog .store-package__bonus { min-height: 1.25rem; font-size: .8125rem; }
-.store-dialog .store-package__bonus strong { color: #a7e6c7; }
 .store-dialog .store-package__price {
   min-height: 2.5rem;
   margin-top: .375rem;
   padding: .5rem .375rem;
-  border: 1px solid #a0f526;
-  border-radius: .5rem;
-  background: linear-gradient(#78ed00, #c7ff3c);
-  box-shadow: inset 0 -3px 0 #70aa16;
-  color: #080d00;
   font-size: .875rem;
 }
-.store-dialog .store-package__price:hover { filter: brightness(1.07); }
 
 .store-dialog .store-package--featured {
   display: grid;
@@ -271,8 +291,6 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   grid-area: badge;
   max-width: 100%;
   padding: .25rem .5rem;
-  background: var(--surface-control);
-  color: var(--text-secondary);
   font-size: .625rem;
 }
 .store-dialog .store-package--featured .store-package__amount { grid-area: amount; font-size: 1.75rem; }
@@ -309,9 +327,11 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   min-width: 0;
   margin-block-start: 1rem;
   padding: .625rem;
-  border: 1px solid var(--top-bar-divider);
+  border: 1px solid var(--surface-border);
   border-radius: .75rem;
-  background: #111513;
+  background:
+    radial-gradient(ellipse at 50% 110%, var(--accent-soft), transparent 72%),
+    var(--surface-inset);
   color: var(--text-primary);
 }
 
@@ -339,7 +359,7 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   flex: none;
   width: 1.15em;
   height: 1.15em;
-  color: var(--primary-accent);
+  color: var(--text-primary);
 }
 
 .quick-buy__controls { gap: .25rem; }
@@ -352,7 +372,7 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   padding: 0;
   border: 0;
   border-radius: var(--radius-card);
-  background: var(--surface-control);
+  background: transparent;
   color: var(--text-primary);
   cursor: pointer;
 }
@@ -377,7 +397,7 @@ html:has(.store-dialog[open]) { overflow: hidden; }
 
 .quick-buy__arrow--prev::before { transform: translateX(1px) rotate(-135deg); }
 .quick-buy__arrow:disabled { opacity: .4; cursor: default; }
-.quick-buy__all:hover, .quick-buy__arrow:hover:not(:disabled) { background: var(--control-hover); }
+.quick-buy__all:hover, .quick-buy__arrow:hover:not(:disabled) { color: var(--primary-accent); background: var(--surface-control); }
 
 .quick-buy button:focus-visible {
   outline: 2px solid var(--primary-accent);
@@ -405,24 +425,18 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   padding: .625rem;
   overflow: hidden;
   scroll-snap-align: start;
-  border-color: #303832;
   border-radius: .625rem;
-  background: linear-gradient(165deg, #26322a, #1a201c 60%);
-}
-
-.quick-buy .store-package--featured {
-  border-color: #677331;
-  background: linear-gradient(160deg, #3b4425, #1e2416 70%);
 }
 
 .quick-buy .store-package__badge {
   z-index: 1;
-  top: .4375rem;
+  top: .5rem;
+  left: .5rem;
   max-width: calc(100% - .875rem);
   padding: .1875rem .5rem;
-  background: #0f1510e6;
-  color: #d9eb9d;
+  transform: none;
   font-size: .625rem;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -432,7 +446,7 @@ html:has(.store-dialog[open]) { overflow: hidden; }
   min-height: 4rem;
   margin-block-start: .375rem;
   padding: .25rem 0 0;
-  background: radial-gradient(ellipse at center, #b5e4402b, transparent 66%);
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--package-border) 18%, transparent), transparent 66%);
 }
 
 .quick-buy .store-package__art .coin-art {
@@ -463,19 +477,12 @@ html:has(.store-dialog[open]) { overflow: hidden; }
 .quick-buy .store-package__art .quick-buy__accent-coin + .coin-art { margin: 0; }
 .quick-buy .store-package__amount { font-size: 1rem; }
 .quick-buy .store-package__amount .coin-art, .quick-buy .store-package__bonus .coin-art { width: 1rem; height: 1rem; }
-.quick-buy .store-package__bonus { min-height: 1.25rem; color: #acf0bf; font-size: .75rem; }
-.quick-buy .store-package__bonus > span { color: inherit; }
+.quick-buy .store-package__bonus { min-height: 1.25rem; font-size: .75rem; }
 
 .quick-buy .store-package__price {
   min-height: 2.5rem;
-  border: 1px solid var(--primary-accent);
-  background: linear-gradient(#80ed13, #bbfa40);
-  box-shadow: inset 0 -2px #6ca017;
-  color: #141a07;
   font-size: .875rem;
 }
-
-.quick-buy .store-package__price:hover { filter: brightness(1.07); }
 
 @media (min-width: 45rem) {
   .quick-buy {

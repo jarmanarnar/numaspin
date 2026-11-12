@@ -83,9 +83,9 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   min-width: 0;
   height: var(--menu-control-size);
   padding: .375rem;
-  border: 0;
+  border: 1px solid var(--surface-border);
   border-radius: var(--menu-group-radius);
-  background: var(--surface-control);
+  background: var(--surface-card);
   color: var(--text-primary);
   font-size: .8125rem;
   font-weight: 700;
@@ -96,8 +96,12 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
 .site-menu__shortcut svg { display: none; flex: none; width: 1.25rem; height: 1.25rem; }
 .site-menu__shortcut:enabled:hover { background: var(--control-hover); }
 .site-menu__shortcut:disabled { color: var(--text-secondary); cursor: default; }
-.site-menu__shortcut--buy { background: var(--primary-accent); color: #111708; }
-.site-menu__shortcut--buy:enabled:hover { background: color-mix(in srgb, var(--primary-accent), #fff 12%); }
+.site-menu__shortcut--buy {
+  border-color: var(--accent-border);
+  background: var(--primary-fill);
+  color: var(--primary-text);
+}
+.site-menu__shortcut--buy:enabled:hover { background: var(--primary-fill); filter: brightness(1.12); }
 .site-menu :is(button, a):focus-visible,
 .site-sidebar :is(button, a):focus-visible,
 #menu-toggle:focus-visible { outline: 2px solid var(--primary-accent); outline-offset: -2px; }
@@ -129,9 +133,9 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   width: 100%;
   min-width: 0;
   padding: .625rem .75rem;
-  border: 0;
+  border: 1px solid var(--surface-border);
   border-radius: var(--menu-group-radius);
-  background: var(--surface-control);
+  background: var(--surface-card);
   color: var(--text-secondary);
   text-align: left;
   cursor: pointer;
@@ -147,7 +151,9 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   padding: .375rem .5rem;
   overflow: hidden;
   color: var(--text-primary);
-  background: radial-gradient(ellipse at 12% 100%, color-mix(in srgb, var(--daily-accent), transparent 72%), transparent 75%), var(--surface-control);
+  background:
+    radial-gradient(ellipse at 12% 100%, color-mix(in srgb, var(--daily-accent), transparent 83%), transparent 68%),
+    linear-gradient(105deg, var(--accent-soft), var(--surface-card) 78%);
 }
 .site-menu__daily::before { content: ''; position: absolute; z-index: -1; inset: 0; background: repeating-conic-gradient(color-mix(in srgb, var(--daily-accent), transparent 95%) 0% 25%, transparent 0% 50%) 100% 50% / 1.5rem 1.5rem; mask-image: linear-gradient(90deg, transparent, #000); }
 .site-menu__daily-art { position: relative; display: block; flex: none; width: 2.75rem; height: 2.75rem; color: var(--daily-accent); }
@@ -163,11 +169,12 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   flex: none;
   gap: 0;
   padding: .25rem;
+  border: 1px solid var(--surface-border);
   border-radius: var(--menu-group-radius);
-  background: var(--surface-control);
+  background: var(--surface-card);
 }
 .site-menu__feature-group { margin: 0; }
-.site-menu__navigation--plain { background: transparent; }
+.site-menu__navigation--plain { border-color: transparent; background: transparent; }
 .site-menu__daily[aria-current="page"] .site-menu__daily-copy > span { color: var(--daily-accent); }
 .site-menu__item {
   box-sizing: border-box;
@@ -181,7 +188,7 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   border: 0;
   border-radius: var(--menu-group-radius);
   background: transparent;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-align: left;
   font-size: .8125rem;
   font-weight: 700;
@@ -191,14 +198,14 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
 }
 .site-menu__item .game-shelf__icon { flex: none; width: 1.25rem; height: 1.25rem; color: var(--text-secondary); }
 .site-menu__item:hover { background: var(--control-hover); color: var(--text-primary); }
-.site-menu__item[aria-current="page"] { background: var(--control-hover); color: var(--text-primary); }
-.site-menu__item:hover .game-shelf__icon,
-.site-menu__item[aria-current="page"] .game-shelf__icon { color: var(--text-primary); }
+.site-menu__item[aria-current="page"] { background: var(--accent-soft); color: var(--primary-accent); }
+.site-menu__item:hover .game-shelf__icon { color: var(--text-primary); }
+.site-menu__item[aria-current="page"] .game-shelf__icon { color: var(--primary-accent); }
 .site-menu__chevron { flex: none; width: 1rem; height: 1rem; margin-left: auto; color: var(--text-secondary); transition: transform 180ms ease; }
 .site-menu__item[aria-expanded="true"] .site-menu__chevron { transform: rotate(180deg); }
 .site-menu__item[aria-expanded="true"] > .game-shelf__icon,
 .site-menu__item[data-child-active="true"] > .game-shelf__icon { color: var(--catalog-accent); }
-.site-menu__subitems { margin: .25rem .5rem 0; padding-top: .25rem; border-top: 1px solid var(--control-hover); }
+.site-menu__subitems { margin: .25rem .5rem 0; padding-top: .25rem; border-top: 1px solid var(--surface-border); }
 .site-menu__subitems .site-menu__item { padding-inline: .25rem; }
 
 .site-menu__tooltip {
@@ -207,8 +214,9 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   display: none;
   max-width: min(16rem, calc(100vw - var(--sidebar-rail-width) - 1.5rem));
   padding: .625rem .75rem;
+  border: 1px solid var(--surface-border);
   border-radius: var(--radius-card);
-  background: var(--surface-control);
+  background: var(--surface-raised);
   color: var(--text-primary);
   font-family: var(--header-font-family);
   font-size: .8125rem;
@@ -237,7 +245,7 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
     width: calc(var(--sidebar-width) - var(--sidebar-inset));
     overflow: hidden;
     border: 1px solid var(--sidebar-divider);
-    border-radius: 1rem;
+    border-radius: .75rem;
     font-family: var(--header-font-family);
     transition: width var(--sidebar-duration) var(--sidebar-easing);
   }
@@ -245,6 +253,7 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
     flex: none;
     padding: .625rem;
     border-top: 1px solid var(--sidebar-divider);
+    background: var(--surface-card);
   }
   body[data-auth="guest"] .site-sidebar__footer { display: none; }
   .site-sidebar__footer .site-menu__shortcuts { grid-template-columns: 1.25fr 1fr; }
@@ -252,10 +261,6 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   .site-sidebar .site-menu__search,
   .site-sidebar .site-menu__item { font-size: .875rem; }
   .site-sidebar .site-menu__item { min-height: var(--menu-control-size); }
-  .site-sidebar .site-menu__item[aria-current="page"] {
-    background: color-mix(in srgb, var(--primary-accent), var(--surface-control) 88%);
-  }
-  .site-sidebar .site-menu__item[aria-current="page"] .game-shelf__icon { color: var(--primary-accent); }
   .site-sidebar[data-expanded="false"] .site-menu__shortcuts {
     justify-content: center;
     grid-template-columns: var(--menu-control-size);

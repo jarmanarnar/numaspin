@@ -12,8 +12,8 @@ html:has(.notifications-drawer[open]) { overflow: hidden; }
   padding: 0;
   overflow: hidden;
   border: 0;
-  border-left: 1px solid var(--top-bar-divider);
-  background: #101012;
+  border-left: 1px solid var(--surface-border);
+  background: var(--surface-inset);
   color: var(--text-primary);
   font-family: var(--header-font-family);
 }
@@ -28,7 +28,7 @@ html:has(.notifications-drawer[open]) { overflow: hidden; }
   .notifications-drawer[open] { translate: 100%; }
 }
 
-.notifications-drawer::backdrop { background: #0003; }
+.notifications-drawer::backdrop { background: color-mix(in srgb, var(--surface-inset) 45%, transparent); }
 
 .notifications-drawer__header {
   display: flex;
@@ -78,7 +78,7 @@ html:has(.notifications-drawer[open]) { overflow: hidden; }
 }
 
 .notifications-drawer__tabs button:hover { color: var(--text-primary); }
-.notifications-drawer__tabs button[aria-selected="true"] { background: #101012; color: var(--text-primary); }
+.notifications-drawer__tabs button[aria-selected="true"] { background: var(--accent-soft); color: var(--text-primary); box-shadow: inset 0 0 0 1px var(--surface-border); }
 
 .notifications-drawer__body {
   flex: 1 1 auto;
@@ -94,7 +94,7 @@ html:has(.notifications-drawer[open]) { overflow: hidden; }
 
 .notification-card {
   padding: .875rem;
-  border: 1px solid transparent;
+  border: 1px solid var(--surface-border);
   border-radius: .625rem;
   background: var(--surface-card);
 }
@@ -116,7 +116,7 @@ html:has(.notifications-drawer[open]) { overflow: hidden; }
 }
 
 .notification-card__header h3 { margin: 0; font-size: .875rem; line-height: 1.35; }
-.notification-card__header time { flex: none; color: var(--text-secondary); font-size: .6875rem; }
+.notification-card__header time { flex: none; color: var(--text-muted); font-size: .6875rem; }
 
 .notification-card__description {
   margin: .375rem 0 0;
@@ -152,7 +152,7 @@ html:has(.notifications-drawer[open]) { overflow: hidden; }
   width: 100%;
   min-height: var(--touch-target);
   padding: .5rem;
-  border: 1px solid transparent;
+  border: 1px solid var(--surface-border);
   border-radius: .625rem;
   background: var(--surface-control);
   color: var(--text-primary);
