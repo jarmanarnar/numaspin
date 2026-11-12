@@ -65,7 +65,7 @@ function navPage({ desktop = false, missing = null, routeFromGame = false } = {}
   };
   const context = {
     document, api,
-    window: { matchMedia(query) { assert.equal(query, '(min-width: 45rem)'); return media; } },
+    window: { matchMedia(query) { assert.equal(query, '(width > 1024px)'); return media; } },
     MutationObserver: class {
       constructor(callback) { this.callback = callback; observers.push(this); }
       observe(target, options) { observations.push({ target, options }); }

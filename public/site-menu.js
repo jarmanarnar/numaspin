@@ -32,7 +32,7 @@ export function initSiteMenu({ openCategory, openFavorites, openProviders, openS
   initialized = true;
 
   const menuBackground = new Map();
-  const desktopMedia = window.matchMedia('(min-width: 45rem)');
+  const desktopMedia = window.matchMedia('(width > 1024px)');
   let desktop = false;
   let expanded = true;
   const sidebarStorageKey = 'luckyloop-sidebar-expanded-v1';

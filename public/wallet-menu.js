@@ -9,8 +9,7 @@ export function initWalletMenu({ account, router, openStore, selectCurrency, doc
   const hide = doc.querySelector('#wallet-hide-balance');
   const feedback = doc.querySelector('#wallet-menu-status');
   const tabFeedback = doc.querySelector('#wallet-tabs-status');
-  const segmentedWallet = doc.defaultView?.matchMedia('(min-width: 22.5rem)');
-  const avatar = doc.querySelector('#header-avatar');
+  const segmentedWallet = doc.defaultView?.matchMedia('(min-width: 19rem)');
   const options = new Map(['GC', 'SC'].map(code => [code, {
     row: doc.querySelector(`#wallet-row-${code}`),
     button: doc.querySelector(`#wallet-select-${code}`),
@@ -56,7 +55,6 @@ export function initWalletMenu({ account, router, openStore, selectCurrency, doc
         option.tabAmount.textContent = isActive ? amount : currency;
       }
     }
-    if (avatar) avatar.textContent = member.profile.avatar || 'L';
     if (!account.isSignedIn()) close();
   }
   function toggle() {

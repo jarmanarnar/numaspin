@@ -7,11 +7,9 @@ export function initRewardsPopover({ router, account }) {
   const trigger = document.querySelector('#header-rewards');
   const panel = document.querySelector('#rewards-popover');
   if (!trigger || !panel) return;
-  if (typeof panel.showPopover !== 'function') {
-    trigger.addEventListener('click', () => router.navigate({ type: 'feature', pageId: 'daily-bonus' }));
-    return;
-  }
 
+  const badge = trigger.querySelector('#header-rewards-count');
+  const supportsPopover = typeof panel.showPopover === 'function';
   const dailyLabel = panel.querySelector('#rewards-daily-status');
   const missions = panel.querySelector('#rewards-missions');
   const missionLabels = DEMO_TASKS.map(task => {
@@ -33,7 +31,7 @@ export function initRewardsPopover({ router, account }) {
   });
 
   let midnightTimer;
-  const isOpen = () => panel.matches(':popover-open');
+  const isOpen = () => supportsPopover && panel.matches(':popover-open');
   function close() {
     if (isOpen()) panel.hidePopover();
   }
@@ -45,23 +43,45 @@ export function initRewardsPopover({ router, account }) {
     return true;
   }
 
+  function renderBadge(count) {
+    if (!badge) return;
+    badge.hidden = count === 0;
+    badge.textContent = count ? String(count) : '';
+    trigger.setAttribute('aria-label', count ? `Rewards, ${count} available` : 'Rewards');
+  }
+
   function render() {
     clearTimeout(midnightTimer);
+    if (!account.isSignedIn()) {
+      renderBadge(0);
+      close();
+      return;
+    }
     const state = account.getMemberState();
     const daily = dailyStatus(state);
+    let available = Number(daily.available);
     dailyLabel.textContent = `${coins.format(daily.amount)} GC · ${daily.available ? 'Ready to collect' : 'Collected today'}`;
     for (const { task, status } of missionLabels) {
-      const label = state.taskClaims.includes(task.id) ? 'Collected' : taskComplete(task.id, state) ? 'Ready to collect' : 'In progress';
+      const collected = state.taskClaims.includes(task.id);
+      const ready = !collected && taskComplete(task.id, state);
+      if (ready) available += 1;
+      const label = collected ? 'Collected' : ready ? 'Ready to collect' : 'In progress';
       status.textContent = `${coins.format(task.amount)} GC · ${label}`;
     }
+    renderBadge(available);
     midnightTimer = setTimeout(render, Math.max(1, Date.parse(daily.nextAt) - Date.now()));
   }
 
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+  account.subscribe(render);
+  render();
+  if (!supportsPopover) {
+    trigger.addEventListener('click', () => router.navigate({ type: 'feature', pageId: 'daily-bonus' }));
+    return;
+  }
+
   panel.addEventListener('beforetoggle', event => {
-    if (event.newState === 'closed') {
-      clearTimeout(midnightTimer);
-      return;
-    }
+    if (event.newState === 'closed') return;
     if (!account.isSignedIn() || document.querySelector('dialog[open]') || !position()) {
       event.preventDefault();
       return;
@@ -77,10 +97,5 @@ export function initRewardsPopover({ router, account }) {
     router.navigate({ type: 'feature', pageId: link.dataset.rewardsPage });
   });
   window.addEventListener('resize', () => { if (isOpen() && !position()) close(); });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && isOpen()) render(); });
   router.subscribe(close);
-  account.subscribe(() => {
-    if (!account.isSignedIn()) close();
-    else if (isOpen()) render();
-  });
 }

@@ -11,9 +11,9 @@
       background: #000;
       /* Fixed component steps keep the lobby proportional across viewport sizes. */
       --fluid-step: clamp(0rem, calc(.833333vw - .166667rem), .5rem);
-      --header-control-size: 2.75rem;
+      --header-control-size: 3rem;
       --header-side-control-width: 3.5rem;
-      --header-padding: .875rem;
+      --header-padding: .75rem;
       --header-gap: .5rem;
       --top-bar-height: calc(var(--header-control-size) + 2 * var(--header-padding) + env(safe-area-inset-top, 0px));
       --top-bar-background: #000;

@@ -219,7 +219,7 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
 }
 .site-menu__tooltip::before { content: ''; position: absolute; top: calc(50% - .25rem); left: -.25rem; width: .5rem; height: .5rem; background: inherit; transform: rotate(45deg); }
 
-@media (min-width: 45rem) {
+@media (width > 1024px) {
   body[data-sidebar] {
     --sidebar-inset: .75rem;
     --sidebar-width: var(--sidebar-rail-width);
@@ -274,8 +274,6 @@ body[data-auth="guest"] .site-menu > .site-menu__scroll {
   .site-sidebar[data-expanded="false"] .site-menu__chevron,
   .site-sidebar[data-expanded="false"] .site-menu__subitems { display: none; }
   body[data-sidebar="collapsed"] .site-menu__tooltip { display: block; }
-}
-@media (min-width: 64rem) {
   body[data-view="lobby"] .site-sidebar {
     inset-block-start: calc(var(--top-bar-height) + var(--lobby-top-gap, var(--sidebar-inset)));
   }

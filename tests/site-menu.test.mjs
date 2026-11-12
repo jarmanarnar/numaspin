@@ -251,7 +251,7 @@ function menuPage({ desktop = false, routeFromGame = false, storage = new Map(),
       innerWidth: 1280, innerHeight: 900,
       addEventListener(type, callback) { windowEvents[type] = callback; },
       matchMedia(query) {
-        assert.match(query, /min-width:\s*45rem/);
+        assert.equal(query, '(width > 1024px)');
         return breakpoint;
       },
     },

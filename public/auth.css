@@ -1,8 +1,5 @@
 .guest-header-actions { display: flex; align-items: center; justify-self: end; gap: .5rem; }
 .guest-header-actions[hidden], .coin-wallet[hidden], .wallet-switch[hidden], .guest-welcome[hidden] { display: none !important; }
-body[data-auth="guest"] .top-bar__inner { grid-template-columns: minmax(0,1fr) auto; }
-body[data-auth="guest"] .site-logo { display: flex; width: 6.5rem; height: 2rem; }
-body[data-auth="guest"] .site-logo__wordmark { white-space: nowrap; }
 .auth-button, .auth-icon-button, .auth-social { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 2.75rem; border: 1px solid #303137; border-radius: .6rem; padding: .625rem 1.25rem; font: 700 .875rem/1.25 var(--header-font-family); color: var(--text-primary); cursor: pointer; text-decoration: none; }
 .auth-button--secondary, .auth-icon-button { background: #202124; }
 .auth-button:hover, .auth-icon-button:hover { filter: brightness(1.08); }
@@ -72,10 +69,6 @@ body[data-auth-dialog="open"] { overflow: hidden; }
 .auth-dialog [hidden] { display: none !important; }
 .auth-button:focus-visible, .auth-social:focus-visible, .auth-tabs button:focus-visible, .auth-icon-button:focus-visible, .auth-close:focus-visible { outline: 2px solid var(--primary-accent); outline-offset: 3px; }
 @media (max-width: 44.99rem) {
-  .guest-extra { display: none; }
-  .guest-header-actions { gap: .375rem; }
-  .guest-header-actions .auth-button { padding-inline: .875rem; }
-  body[data-auth="guest"] .site-logo { width: 4.75rem; }
   .auth-dialog { width: 25rem; border-radius: 1rem; }
   .auth-layout { display: block; min-height: 0; }
   .auth-wireframe { display: none; }
@@ -85,8 +78,5 @@ body[data-auth-dialog="open"] { overflow: hidden; }
   .auth-input-wrap input::placeholder { font-size: .8125rem; }
 }
 @media (max-width: 22.4375rem) {
-  body[data-auth="guest"] .header-context { gap: .25rem; }
-  body[data-auth="guest"] .site-logo { width: 4.25rem; }
-  .guest-header-actions .auth-button { padding-inline: .625rem; }
   .auth-content { padding-inline: 1.125rem; }
 }

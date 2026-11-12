@@ -45,12 +45,12 @@
 .mobile-nav__item:is([aria-current="page"], [data-active="true"]) .mobile-nav__icon { color: var(--primary-accent); }
 .mobile-nav__item:focus-visible { outline: 2px solid var(--primary-accent); outline-offset: -3px; }
 
-@media (width < 45rem) {
+@media (width <= 1024px) {
   body[data-mobile-nav="true"] { padding-bottom: var(--mobile-nav-height); }
   body[data-mobile-nav="true"] .mobile-nav { display: grid; }
   body[data-mobile-nav="true"][data-view="game"] { padding-bottom: 0; }
   body[data-mobile-nav="true"][data-view="game"] .mobile-nav { display: none; }
   body[data-mobile-nav="true"] .top-bar #menu-toggle { display: none; }
-  body[data-mobile-nav="true"]:not([data-view="game"]) .top-bar .site-logo { display: flex; }
+  body[data-mobile-nav="true"] .top-bar .site-logo { display: flex; }
   html:has(body[data-mobile-nav="true"]:not([data-view="game"])) { scroll-padding-block-end: var(--mobile-nav-height); }
 }

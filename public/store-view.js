@@ -109,7 +109,7 @@ export function initStoreView({ router, account, auth, verifyPhone } = {}) {
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) storeDialog.close();
   });
 
-  const desktop = window.matchMedia('(min-width: 45rem)');
+  const desktop = window.matchMedia('(width > 1024px)');
   const entryPoints = document.querySelectorAll('#header-buy-coins, #menu-buy, #wallet-add, #quick-buy-view-all');
   function syncEntryPoints() {
     for (const button of entryPoints) {

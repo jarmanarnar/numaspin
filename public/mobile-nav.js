@@ -12,7 +12,7 @@ export function initMobileNav({ openMenu, closeMenu, openHome, openStore, openFe
   if (![nav, categories, ...Object.values(dialogs), ...buttons.values()].every(Boolean)) return;
   initialized = true;
 
-  const desktopMedia = window.matchMedia('(min-width: 45rem)');
+  const desktopMedia = window.matchMedia('(width > 1024px)');
 
   function sync() {
     const selected = dialogs.menu.open ? 'menu'
