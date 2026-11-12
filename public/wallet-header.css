@@ -142,6 +142,7 @@ button.header-buy-coins {
 }
 .wallet-currency-tab {
   box-sizing: border-box;
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,23 +321,18 @@ button.header-buy-coins {
   }
 }
 
+/* Keep currency controls at the same size; reclaim outer space on narrow phones. */
 @media (width < 24rem) {
-  .top-bar .wallet-currency-selector {
-    gap: .1875rem;
+  .top-bar__inner {
+    width: calc(100% - max(.5rem, env(safe-area-inset-left, 0px)) - max(.5rem, env(safe-area-inset-right, 0px)));
   }
 
-  .top-bar .wallet-currency-tab {
-    flex: none;
-    width: 4.625rem;
-    min-width: 0;
-    gap: .25rem;
-    padding-inline: .1875rem;
-    font-size: .75rem;
+  body[data-wallet-layout="currency-menu"]:not([data-auth="guest"]) .top-bar__inner {
+    grid-template-columns: minmax(2rem, 1fr) auto minmax(3rem, 1fr);
   }
 
-  .top-bar .wallet-currency-tab img {
-    width: 1rem;
-    height: 1rem;
+  .top-bar .header-context .site-logo {
+    width: 2rem;
   }
 }
 
