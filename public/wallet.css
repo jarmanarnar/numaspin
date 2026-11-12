@@ -5,7 +5,7 @@
 }
 
 .header-context { display: flex; align-items: center; gap: .5rem; min-width: 0; justify-self: start; }
-.site-logo { display: flex; flex: none; align-items: center; justify-content: center; width: 3.25rem; height: 1.75rem; border-radius: .25rem; container-type: inline-size; }
+.site-logo { display: flex; flex: none; align-items: center; justify-content: center; width: 3.25rem; height: 1.75rem; border-radius: .25rem; container-type: inline-size; text-decoration: none; }
 .site-logo__wordmark {
   color: var(--text-primary);
   font: 700 clamp(.625rem, 17cqi, 1.125rem)/1 var(--header-font-family);
